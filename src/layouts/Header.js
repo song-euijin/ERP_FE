@@ -4,27 +4,17 @@ import {
   Navbar,
   Collapse,
   Nav,
-  NavItem,
-  NavbarBrand,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Dropdown,
-  Button,
 } from "reactstrap";
-import { ReactComponent as LogoWhite } from "../assets/images/logos/xtremelogowhite.svg";
-import user1 from "../assets/images/users/user1.jpg";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = React.useState(false);
-  const [dropdownOpen, setDropdownOpen] = React.useState(false);
-
-  const toggle = () => setDropdownOpen((prevState) => !prevState);
-
+  const [isOpen] = React.useState(false);
   let location = useLocation();
 
-  const HRnumber = location.pathname.lastIndexOf('HR');
+  const EASnumber = location.pathname.lastIndexOf('EAS');
   const CRMnumber = location.pathname.lastIndexOf('CRM');
   const PMSnumber = location.pathname.lastIndexOf('PMS');
   const Adminnumber = location.pathname.lastIndexOf('Admin');
@@ -35,15 +25,15 @@ const Header = () => {
         <Nav className="me-auto" navbar>
           <UncontrolledDropdown inNavbar nav>
             <DropdownToggle caret nav>
-              {HRnumber >= 1 ? 'HR' 
+              {EASnumber >= 1 ? 'EAS' 
               : CRMnumber >= 1 ? 'CRM' 
               : PMSnumber >= 1 ? 'PMS' 
               : Adminnumber >= 1 ? 'Admin Page'
               : '시스템 선택'}
             </DropdownToggle>
             <DropdownMenu end>
-            <Link to="HR/starter" className="nav-link">
-            <DropdownItem>HR</DropdownItem>
+            <Link to="/EAS/starter" className="nav-link">
+            <DropdownItem>EAS</DropdownItem>
             </Link>
             <Link to="/CRM/starter" className="nav-link">
             <DropdownItem>CRM</DropdownItem>

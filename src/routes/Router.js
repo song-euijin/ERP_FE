@@ -1,5 +1,8 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
+import UserInfo from "../views/Admin/UserInfo.js";
+import UserList from "../views/Admin/UserList.js";
+import UserReg from "../views/Admin/UserReg.js";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
@@ -7,7 +10,7 @@ const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 /***** Pages ****/
 
 const Starter = lazy(() => import("../views/Starter.js"));
-const HRStarter = lazy(() => import("../views/HR/Starter.js"));
+const EASStarter = lazy(() => import("../views/EAS/Starter.js"));
 const CRMStarter = lazy(() => import("../views/CRM/Starter.js"));
 const PMSStarter = lazy(() => import("../views/PMS/Starter.js"));
 const ProjectList = lazy(() => import("../views/PMS/ProjectList.js"));
@@ -29,14 +32,16 @@ const ThemeRoutes = [
     path: "/",
     element: <FullLayout />,
     children: [
-      //      { path: "/", element: <Navigate to="/starter" /> },
-      { path: "/", exact: true, element: <Starter /> },
+      { path: "/", element: <Navigate to="/starter" /> },
       { path: "/starter", exact: true, element: <Starter /> },
-      { path: "/HR/starter", exact: true, element: <HRStarter /> },
+      { path: "/EAS/starter", exact: true, element: <EASStarter /> },
       { path: "/CRM/starter", exact: true, element: <CRMStarter /> },
       { path: "/PMS/starter", exact: true, element: <PMSStarter /> },
       { path: "/PMS/ProjectList", exact: true, element: <ProjectList /> },
       { path: "/Admin/starter", exact: true, element: <AdminStarter /> },
+      { path: "/Admin/UserList", exact: true, element: <UserList /> },
+      { path: "/Admin/UserReg", exact: true, element: <UserReg /> },
+      { path: "/Admin/UserInfo", exact: true, element: <UserInfo /> },
       { path: "/about", exact: true, element: <About /> },
       { path: "/alerts", exact: true, element: <Alerts /> },
       { path: "/badges", exact: true, element: <Badges /> },

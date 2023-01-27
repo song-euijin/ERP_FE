@@ -2,10 +2,10 @@ import { Button, Nav, NavItem } from "reactstrap";
 import Logo from "./Logo";
 import { Link, useLocation } from "react-router-dom";
 
-const HR = [
+const EAS = [
   {
-    title: "HR 메뉴[수정필요]",
-    href: "/HR/starter",
+    title: "EAS 메뉴[수정필요]",
+    href: "/EAS/starter",
     icon: "bi bi-speedometer2",
   }
 ];
@@ -26,6 +26,24 @@ const PMS = [
   {
     title: "프로젝트 관리",
     href: "/PMS/ProjectList",
+    icon: "bi bi-speedometer2",
+  }
+];
+
+const Admin = [
+  {
+    title: "Admin 메뉴[수정필요]",
+    href: "/Admin/starter",
+    icon: "bi bi-speedometer2",
+  },
+  {
+    title: "사용자 목록",
+    href: "/Admin/UserList",
+    icon: "bi bi-speedometer2",
+  },
+  {
+    title: "사용자 등록",
+    href: "/Admin/UserReg",
     icon: "bi bi-speedometer2",
   }
 ];
@@ -90,9 +108,10 @@ const Sidebar = () => {
   };
   let location = useLocation();
 
-  const HRnumber = location.pathname.lastIndexOf('HR');
+  const EASnumber = location.pathname.lastIndexOf('EAS');
   const CRMnumber = location.pathname.lastIndexOf('CRM');
   const PMSnumber = location.pathname.lastIndexOf('PMS');
+  const Adminnumber = location.pathname.lastIndexOf('Admin');
   
   return (
     <div className="p-3">
@@ -108,7 +127,7 @@ const Sidebar = () => {
       </div>
       <div className="pt-4 mt-2">
         <Nav vertical className="sidebarNav">
-        {HRnumber >= 1 ? HR.map((navi, index) => (
+        {EASnumber >= 1 ? EAS.map((navi, index) => (
             <NavItem key={index} className="sidenav-bg">
               <Link
                 to={navi.href}
@@ -150,6 +169,20 @@ const Sidebar = () => {
                 <span className="ms-3 d-inline-block">{navi.title}</span>
               </Link>
             </NavItem>
+          )) : Adminnumber >= 1 ? Admin.map((navi, index) => (
+            <NavItem key={index} className="sidenav-bg">
+              <Link
+                to={navi.href}
+                className={
+                  location.pathname === navi.href
+                    ? "text-primary nav-link py-3"
+                    : "nav-link text-secondary py-3"
+                }
+              >
+                <i className={navi.icon}></i>
+                <span className="ms-3 d-inline-block">{navi.title}</span>
+              </Link>
+            </NavItem>  
           )):defalutSideBar.map((navi, index) => (
             <NavItem key={index} className="sidenav-bg">
               <Link
