@@ -280,7 +280,7 @@ const UserReg = () => {
         <div>
             <div className="col-lg-12" style={{width:"850px"}}>
                 <div className="card">
-                    <h6 className="border-bottom p-3 mb-0 card-title"><i className="bi bi-card-text me-2"> </i>사원 등록</h6>
+                    <h6 className="border-bottom p-3 mb-0 card-title"><i className="bi bi-card-text me-2"> </i>사원 등록!!!!!!!</h6>
                     <div className="card-body">
                     <StyledForm id="userRegForm" style={{width:"800px"}}>
                         <StyledTable id="userInfoTable">
