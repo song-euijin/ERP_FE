@@ -1,9 +1,9 @@
 
-
 const Starter = () => {
+
   return (
     <div>
-      Admin 시작페이지
+      관리자 시작 페이지
     </div>
   );
 };
