@@ -3,7 +3,7 @@
 const Starter = () => {
   return (
     <div>
-     HR 시작페이지
+      EAS 시작페이지
     </div>
   );
 };

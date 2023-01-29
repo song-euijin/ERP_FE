@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import customAxios from "../../components/axios/axios";
 import { Col, Form, Label, Row, Button, Input, FormGroup } from "reactstrap";
 import { DatePicker } from "reactstrap-date-picker";
-import axios from "axios";
 
 const Starter = () => {
   const [startDate, setStartDate] = useState(new Date().toISOString());
