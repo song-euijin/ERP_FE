@@ -29,27 +29,26 @@ const StyledThead = styled.thead`
 
 const CCodeList = () => {
   //사용자 목록
-  const [users, setUsers] = useState([
+  const [codes, setCodes] = useState([
     {
-      useName: "",
-      userId: "",
-      userDept: "",
-      userRank: "",
-      userPosition: "",
-      userAuthority: "",
-      userStatus: "",
+      upper_COMMON_CODE: "",
+      common_CODE: "",
+      code_NAME: "",
+      code_DESCRIPTION: "",
+      code_REG_DATE: "",
+      code_MODIFY_DATE: "",
     },
   ]);
 
   //사용자 목록 axios
   useEffect(() => {
-    axios.get("http://localhost:8080/CMN/userList.do").then((response) => {
-      setUsers(response.data);
+    axios.get("http://192.168.0.17:5001/CMN/CodeList.do").then((response) => {
+      setCodes(response.data);
     });
   }, []);
 
   // searchKey, Value
-  const [searchKey, setSearchKey] = useState("userDept");
+  const [searchKey, setSearchKey] = useState("common_CODE");
   const [searchValue, setSearchValue] = useState("");
 
   // searchKey 변경
@@ -76,7 +75,7 @@ const CCodeList = () => {
           searchValue
       )
       .then((response) => {
-        setUsers(response.data);
+        setCodes(response.data);
       });
   }, [searchKey, searchValue]);
 
@@ -85,7 +84,7 @@ const CCodeList = () => {
       <div className="col-lg-12">
         <div className="card">
           <h6 className="border-bottom p-3 mb-0 card-title">
-            <i className="bi bi-card-text me-2"> </i>사원 목록
+            <i className="bi bi-card-text me-2"> </i>공통 코드 목록
           </h6>
           <div className="card-body">
             <Input
@@ -93,12 +92,12 @@ const CCodeList = () => {
               style={{ width: "150px", display: "inline", marginRight: "10px" }}
               onChange={onChangeSearchKey}
             >
-              <option value={"userDept"}>부서</option>
-              <option value={"userName"}>이름</option>
-              <option value={"userId"}>아이디</option>
-              <option value={"userRank"}>직급</option>
-              <option value={"userPosition"}>직책</option>
-              <option value={"userStatus"}>상태</option>
+              <option value={"upper_COMMON_CODE"}>상위 공통 코드</option>
+              <option value={"common_CODE"}>공통 코드</option>
+              <option value={"code_NAME"}>공통 코드명</option>
+              <option value={"code_DESCRIPTION"}>코드 설명</option>
+              <option value={"code_REG_DATE"}>등록 일자</option>
+              <option value={"code_MODIFY_DATE"}>수정 일자</option>
             </Input>
             <Input
               type={"text"}
@@ -131,39 +130,39 @@ const CCodeList = () => {
                   <th style={{ width: "2%", textAlign: "center" }}>
                     <input type={"checkbox"} />
                   </th>
-                  <th style={{ width: "10%" }}>이름</th>
-                  <th style={{ width: "18%" }}>아이디</th>
-                  <th style={{ width: "14%" }}>부서</th>
-                  <th style={{ width: "14%" }}>직급</th>
-                  <th style={{ width: "14%" }}>직책</th>
-                  <th style={{ width: "14%" }}>상태</th>
+                  <th style={{ width: "14%" }}>상위 공통 코드</th>
+                  <th style={{ width: "14%" }}>공통 코드</th>
+                  <th style={{ width: "14%" }}>공통 코드명</th>
+                  <th style={{ width: "14%" }}>코드 설명</th>
+                  <th style={{ width: "14%" }}>등록 일자</th>
+                  <th style={{ width: "14%" }}>수정 일자</th>
                 </tr>
               </StyledThead>
               <tbody>
-                {users.length < 1 ? (
+                {codes.length < 1 ? (
                   <tr>
                     <td colSpan={9} style={{ textAlign: "center" }}>
                       검색 결과가 없습니다.
                     </td>
                   </tr>
                 ) : (
-                  users.map((user, index) => (
+                  codes.map((code, index) => (
                     <tr key={index}>
                       <td style={{ textAlign: "center" }}>
                         <input type={"checkbox"} />
                       </td>
-                      <td>{user.userName}</td>
+                      <td>{code.upper_COMMON_CODE}</td>
                       <td className="target">
                         <StyledLink
-                          to={"/Admin/UserInfo?userId=" + user.userId}
+                          to={"/Admin/UserInfo?userId=" + code.common_CODE}
                         >
-                          {user.userId}
+                          {code.common_CODE}
                         </StyledLink>
                       </td>
-                      <td>{user.userDept}</td>
-                      <td>{user.userRank}</td>
-                      <td>{user.userPosition}</td>
-                      <td>{user.userStatus}</td>
+                      <td>{code.code_NAME}</td>
+                      <td>{code.code_DESCRIPTION}</td>
+                      <td>{code.code_REG_DATE}</td>
+                      <td>{code.code_MODIFY_DATE}</td>
                     </tr>
                   ))
                 )}
