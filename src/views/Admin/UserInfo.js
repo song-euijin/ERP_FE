@@ -202,7 +202,7 @@ const UserInfo = (args) => {
         console.log('부서>',modifyDept,'직급>',modifyRank,'직책>',modifyPosition,'권한>',modifyAuthority,'상태>',modifyStatus );
         axios.post("http://localhost:8080/CMN/userModify.do", params)
         .then(function() {
-            alert('사용자 수정이 정상적으로 처리되었습니다!!!.');
+            alert('사용자 수정이 정상적으로 처리되었습니다!!!!!!.');
             toggle();
             window.location.replace('/Admin/UserInfo?userId='+getUserId);
           })
