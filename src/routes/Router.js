@@ -4,11 +4,7 @@ import UserInfo from "../views/Admin/UserInfo.js";
 import UserList from "../views/Admin/UserList.js";
 import UserReg from "../views/Admin/UserReg.js";
 import CCodeList from "../views/Admin/CCodeList.js";
-<<<<<<< HEAD
 import DeptManage from "../views/Admin/DeptManage.js";
-=======
-import CCodeReg from "../views/Admin/CCodeReg.js";
->>>>>>> 131f0a3820c4d14e5fbe6e00a93b1b86ba665575
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
@@ -49,12 +45,7 @@ const ThemeRoutes = [
       { path: "/Admin/UserReg", exact: true, element: <UserReg /> },
       { path: "/Admin/UserInfo", exact: true, element: <UserInfo /> },
       { path: "/Admin/CCodeList", exact: true, element: <CCodeList /> },
-<<<<<<< HEAD
       { path: "/Admin/DeptManage", exact: true, element: <DeptManage /> },
-=======
-      { path: "/Admin/CCodeReg", exact: true, element: <CCodeReg /> },
-
->>>>>>> 131f0a3820c4d14e5fbe6e00a93b1b86ba665575
       { path: "/about", exact: true, element: <About /> },
       { path: "/alerts", exact: true, element: <Alerts /> },
       { path: "/badges", exact: true, element: <Badges /> },
