@@ -3,14 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const StyledForm = styled.form`
-  background-color: white;
-  padding: 50px;
-  border: 1px solid #dddddd;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
-`;
-
 const StyledTable = styled.table`
   border-collapse: separate;
   border-spacing: 5px 20px;

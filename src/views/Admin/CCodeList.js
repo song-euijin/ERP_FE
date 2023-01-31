@@ -37,12 +37,17 @@ const CCodeList = () => {
             <i className="bi bi-card-text me-2"> </i>공통 코드 목록
           </h6>
           <div className="card-body"></div>
+          <CCodeHead></CCodeHead>
           <CCodeReg></CCodeReg>
           <CCodeDetail></CCodeDetail>
         </div>
       </div>
     </div>
   );
+};
+
+const CCodeHead = () => {
+  return <div></div>;
 };
 
 const CCodeDetail = () => {
