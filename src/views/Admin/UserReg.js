@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
+import ComponentCard from '../../components/ComponentCard';
 
 const StyledForm = styled.form`
   background-color: white;
@@ -516,151 +517,146 @@ const UserReg = () => {
     // 사용자 등록 실행 End
 
     return (
-        <div>
-            <div className="col-lg-12" style={{width:"850px"}}>
-                <div className="card" style={{boxShadow:' 0 2px 5px rgba(0,0,0,.25)'}}>
-                    <h6 className="border-bottom p-3 mb-0 card-title"><i className="bi bi-card-text me-2"> </i>사원 등록</h6>
-                    <div className="card-body">
-                    <StyledForm id="userRegForm" style={{width:"800px"}}>
-                        <StyledTable id="userInfoTable">
-                            <tbody>
-                                <tr>
-                                    <td>사용자 성</td>
-                                    <td><input type="text" className="form-control" id="userFirstName" name="userFirstName" onChange={userInfoChange} onKeyUp={nameVaild}/></td>
-                                    <td>사용자 이름</td>
-                                    <td><input type="text" className="form-control" id="userLastName" name="userLastName" onChange={userInfoChange} onKeyUp={nameVaild}/></td>
-                                </tr>
-                                {isNameValid && <tr><td></td><td className="invalid-input" colSpan={5} style={{color:"red", textAlign:"center"}}>유효한 한글값을 입력하세요.</td></tr>}
-                                <tr>
-                                    <td>아이디</td>
-                                    {companyInfo.map((info, index)=>(
-                                         <td key={index} colSpan={4}>
-                                            <input type="text" className="form-control" id="userId" name="userId" style={{width:"200px", float:"left"}} onChange={userInfoChange} onKeyUp={idVaild}/>
-                                            <span style={{float:"left", margin:"10px", height:"10px"}}>@</span>
-                                            <input type="text" className="form-control" id="cpDomain" name="cpDomain" style={{width:"200px", float:"left", backgroundColor: "lightgrey"}} defaultValue={info.companyDomain} readOnly/>
-                                            <button type="button" className="btn btn btn-primary" style={{width:'126px'}} onClick={onClickIdCheck}>중복 확인</button>
-                                     </td> 
-                                    ))}   
-                                    
-                                </tr>
-                                {isIdValid && <tr><td></td><td className="invalid-input" colSpan={3} style={{color:"red", textAlign:"left"}}>5~15자 사이의 영문,숫자 값을 입력하세요.</td></tr>}
-                                {idDuplCheck && <tr><td></td><td className="invalid-input" colSpan={3} style={{color:"red", textAlign:"left"}}>아이디 중복확인을 진행해주세요.</td></tr>}
-                                {idCheckFail && <tr><td></td><td className="invalid-input" colSpan={3} style={{color:"red", textAlign:"left"}}>아이디가 존재합니다. 다른아이디를 사용하세요.</td></tr>}
-                                {idCheckPass && <tr><td></td><td className="invalid-input" colSpan={3} style={{color:"green", textAlign:"left"}}>사용가능한 아이디입니다.</td></tr>}
-                                <tr>
-                                    <td>비밀번호</td>
-                                    <td><input type="password" className="form-control" id="userPw" name="userPw" autoComplete="off" onChange={userInfoChange} onKeyUp={pwVaild}/></td>
-                                    <td>비밀번호 확인</td>
-                                    <td><input type="password" className="form-control" id="userPwCheck" name="userPwCheck" autoComplete="off" onChange={userInfoChange}/></td>  
-                                </tr>
-                                {isPwValid && <tr><td></td><td className="invalid-input" colSpan={5} style={{color:"red", textAlign:"left"}}>반복, 연속되지 않은 영문, 숫자, 특문을 포함한 8~15자 값을 입력하세요.</td></tr>}
-                                {isPwChkValid && <tr><td></td><td className="invalid-input" colSpan={5} style={{color:"red", textAlign:"left"}}>비밀번호 확인이 다릅니다.</td></tr>}
-                                {isPwChkPass && <tr><td></td><td className="invalid-input" colSpan={5} style={{color:"green", textAlign:"left"}}>사용가능한 비밀번호입니다.</td></tr>}
-                                <tr>
-                                    <td>연락처</td>
-                                    <td colSpan={2}>
-                                        <select id="phoneF" className="form-select" style={{marginRight:"10px", float:"left", width:"100px"}} onChange={selectPhoneChange}>
-                                            <option defaultChecked>010</option>
-                                            <option>011</option>
-                                            <option>016</option>
-                                            <option>017</option>
-                                            <option>018</option>
-                                            <option>019</option>
-                                        </select>
-                                        <input type="text" className="form-control" id="userPhone" name="userPhone" style={{width:"200px", float:"left"}} maxLength="8" onChange={userInfoChange} onKeyUp={phoneValid}/>
-                                    </td>
-                                    {isPhoneValid && <td className="invalid-input" colSpan={2} style={{color:"red", textAlign:"left"}}>-를 제외한 7~8자리 숫자를 입력해주세요.</td>}
-                                </tr>
-                                <tr>
-                                    <td>내선번호</td>
-                                    <td colSpan={2}>
-                                        <select id="landLineNumF" className="form-select" style={{marginRight:"10px", float:"left", width:"100px"}} onChange={selectLandLineNumChange}>
-                                            <option defaultChecked>02</option>
-                                            <option>031</option>
-                                            <option>032</option>
-                                            <option>042</option>
-                                            <option>044</option>
-                                            <option>051</option>
-                                            <option>052</option>
-                                            <option>062</option>
-                                            <option>063</option>
-                                            <option>064</option>
-                                        </select>
-                                        <input type="text" className="form-control" id="userLandLineNumber" name="userLandLineNumber" style={{width:"200px", float:"left"}} maxLength="8" onChange={userInfoChange} onKeyUp={landLineNumValid}/>
-                                    </td>
-                                    {isLandLineNumValid && <td className="invalid-input" colSpan={2} style={{color:"red", textAlign:"left"}}>-를 제외한 7~8자리 숫자를 입력해주세요.</td>}
-                                </tr>
-                                <tr>
-                                    <td>자택 주소</td>
-                                    <td><input type="text" style={{backgroundColor: "lightgrey"}} className="form-control" id="userZipCode" name="userZipCode"  value={userInfo.userZipCode||''} readOnly/></td>
-                                    <td>
-                                        <button type="button" className="btn btn btn-primary" onClick={handleClick}>우편번호 검색</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="hidden"/></td>
-                                    <td colSpan={3}><input type="text" style={{backgroundColor: "lightgrey"}} className="form-control" id="userAddr" name="userAddr" value={userInfo.userAddr||''} readOnly/></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="hidden"/></td>
-                                    <td colSpan={3}><input type="text" className="form-control" id="userAddrDetail" name="userAddrDetail" onChange={userInfoChange}/></td>
-                                </tr>
-                                <tr>
-                                    <td>소속 부서</td>
-                                    <td>
-                                        <select style={{width:'200px'}} className="form-select" id="userDept" name="userDept" onChange={userInfoChange}>
-                                            <option value={"default"} hidden>: : : 부서 선택 : : :</option>
-                                            {dept.map((d, index) => (
-                                                <option key={index} value={d.commonCode}>{d.codeName}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>직급</td>
-                                    <td>
-                                        <select style={{width:'200px'}} className="form-select" id="userRank" name="userRank" onChange={userInfoChange}>
-                                            <option value={"default"} hidden>: : : 직급 선택 : : :</option>
-                                            {rank.map((r, index) => (
-                                                <option key={index} value={r.commonCode}>{r.codeName}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>직책</td>
-                                    <td>
-                                        <select style={{width:'200px'}} className="form-select" id="userPosition" name="userPosition" onChange={userInfoChange}>
-                                            <option value={"default"} hidden>: : : 직책 선택 : : :</option>
-                                            {position.map((p, index) => (
-                                                <option key={index} value={p.commonCode}>{p.codeName}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>권한</td>
-                                    <td>
-                                        <select style={{width:'200px'}} className="form-select" id="userAuthority" name="userAuthority" onChange={userInfoChange}>
-                                        <option value={"default"} hidden>: : : 권한 선택 : : :</option>
-                                        {authority.map((a, index) => (
-                                                <option key={index} value={a.commonCode}>{a.codeName}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </StyledTable><br/><br/><br/>
-                        <div>
-                            <button type="button" className="btn btn btn-primary" id="userRegBtn" style={{marginLeft:"40%", float:"left"}} onClick={regUserInfo}>등록</button>
-                            <Link to={'/Admin/UserList'}>
-                                <button type="button" className="btn btn btn-secondary" id="cancle" style={{marginLeft:"20px", float:"left"}}>취소</button>
-                            </Link>
-                        </div><br/>
-                    </StyledForm>
-                    </div>
-                </div>
-            </div>
+        <div style={{display:'flex', justifyContent:'space-evenly'}}>
+            <ComponentCard title={'사용자 등록'}>
+                <StyledForm id="userRegForm">
+                    <StyledTable id="userInfoTable">
+                        <tbody>
+                            <tr>
+                                <td>사용자 성</td>
+                                <td><input type="text" className="form-control" id="userFirstName" name="userFirstName" onChange={userInfoChange} onKeyUp={nameVaild}/></td>
+                                <td>사용자 이름</td>
+                                <td><input type="text" className="form-control" id="userLastName" name="userLastName" onChange={userInfoChange} onKeyUp={nameVaild}/></td>
+                            </tr>
+                            {isNameValid && <tr><td></td><td className="invalid-input" colSpan={5} style={{color:"red", textAlign:"center"}}>유효한 한글값을 입력하세요.</td></tr>}
+                            <tr>
+                                <td>아이디</td>
+                                {companyInfo.map((info, index)=>(
+                                        <td key={index} colSpan={4}>
+                                        <input type="text" className="form-control" id="userId" name="userId" style={{width:"200px", float:"left"}} onChange={userInfoChange} onKeyUp={idVaild}/>
+                                        <span style={{float:"left", margin:"10px", height:"10px"}}>@</span>
+                                        <input type="text" className="form-control" id="cpDomain" name="cpDomain" style={{width:"200px", float:"left", backgroundColor: "lightgrey"}} defaultValue={info.companyDomain} readOnly/>
+                                        <button type="button" className="btn btn btn-primary" style={{width:'126px'}} onClick={onClickIdCheck}>중복 확인</button>
+                                    </td> 
+                                ))}   
+                                
+                            </tr>
+                            {isIdValid && <tr><td></td><td className="invalid-input" colSpan={3} style={{color:"red", textAlign:"left"}}>5~15자 사이의 영문,숫자 값을 입력하세요.</td></tr>}
+                            {idDuplCheck && <tr><td></td><td className="invalid-input" colSpan={3} style={{color:"red", textAlign:"left"}}>아이디 중복확인을 진행해주세요.</td></tr>}
+                            {idCheckFail && <tr><td></td><td className="invalid-input" colSpan={3} style={{color:"red", textAlign:"left"}}>아이디가 존재합니다. 다른아이디를 사용하세요.</td></tr>}
+                            {idCheckPass && <tr><td></td><td className="invalid-input" colSpan={3} style={{color:"green", textAlign:"left"}}>사용가능한 아이디입니다.</td></tr>}
+                            <tr>
+                                <td>비밀번호</td>
+                                <td><input type="password" className="form-control" id="userPw" name="userPw" autoComplete="off" onChange={userInfoChange} onKeyUp={pwVaild}/></td>
+                                <td>비밀번호 확인</td>
+                                <td><input type="password" className="form-control" id="userPwCheck" name="userPwCheck" autoComplete="off" onChange={userInfoChange}/></td>  
+                            </tr>
+                            {isPwValid && <tr><td></td><td className="invalid-input" colSpan={5} style={{color:"red", textAlign:"left"}}>반복, 연속되지 않은 영문, 숫자, 특문을 포함한 8~15자 값을 입력하세요.</td></tr>}
+                            {isPwChkValid && <tr><td></td><td className="invalid-input" colSpan={5} style={{color:"red", textAlign:"left"}}>비밀번호 확인이 다릅니다.</td></tr>}
+                            {isPwChkPass && <tr><td></td><td className="invalid-input" colSpan={5} style={{color:"green", textAlign:"left"}}>사용가능한 비밀번호입니다.</td></tr>}
+                            <tr>
+                                <td>연락처</td>
+                                <td colSpan={2}>
+                                    <select id="phoneF" className="form-select" style={{marginRight:"10px", float:"left", width:"100px"}} onChange={selectPhoneChange}>
+                                        <option defaultChecked>010</option>
+                                        <option>011</option>
+                                        <option>016</option>
+                                        <option>017</option>
+                                        <option>018</option>
+                                        <option>019</option>
+                                    </select>
+                                    <input type="text" className="form-control" id="userPhone" name="userPhone" style={{width:"200px", float:"left"}} maxLength="8" onChange={userInfoChange} onKeyUp={phoneValid}/>
+                                </td>
+                                {isPhoneValid && <td className="invalid-input" colSpan={2} style={{color:"red", textAlign:"left"}}>-를 제외한 7~8자리 숫자를 입력해주세요.</td>}
+                            </tr>
+                            <tr>
+                                <td>내선번호</td>
+                                <td colSpan={2}>
+                                    <select id="landLineNumF" className="form-select" style={{marginRight:"10px", float:"left", width:"100px"}} onChange={selectLandLineNumChange}>
+                                        <option defaultChecked>02</option>
+                                        <option>031</option>
+                                        <option>032</option>
+                                        <option>042</option>
+                                        <option>044</option>
+                                        <option>051</option>
+                                        <option>052</option>
+                                        <option>062</option>
+                                        <option>063</option>
+                                        <option>064</option>
+                                    </select>
+                                    <input type="text" className="form-control" id="userLandLineNumber" name="userLandLineNumber" style={{width:"200px", float:"left"}} maxLength="8" onChange={userInfoChange} onKeyUp={landLineNumValid}/>
+                                </td>
+                                {isLandLineNumValid && <td className="invalid-input" colSpan={2} style={{color:"red", textAlign:"left"}}>-를 제외한 7~8자리 숫자를 입력해주세요.</td>}
+                            </tr>
+                            <tr>
+                                <td>자택 주소</td>
+                                <td><input type="text" style={{backgroundColor: "lightgrey"}} className="form-control" id="userZipCode" name="userZipCode"  value={userInfo.userZipCode||''} readOnly/></td>
+                                <td>
+                                    <button type="button" className="btn btn btn-primary" onClick={handleClick}>우편번호 검색</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="hidden"/></td>
+                                <td colSpan={3}><input type="text" style={{backgroundColor: "lightgrey"}} className="form-control" id="userAddr" name="userAddr" value={userInfo.userAddr||''} readOnly/></td>
+                            </tr>
+                            <tr>
+                                <td><input type="hidden"/></td>
+                                <td colSpan={3}><input type="text" className="form-control" id="userAddrDetail" name="userAddrDetail" onChange={userInfoChange}/></td>
+                            </tr>
+                            <tr>
+                                <td>소속 부서</td>
+                                <td>
+                                    <select style={{width:'200px'}} className="form-select" id="userDept" name="userDept" onChange={userInfoChange}>
+                                        <option value={"default"} hidden>: : : 부서 선택 : : :</option>
+                                        {dept.map((d, index) => (
+                                            <option key={index} value={d.commonCode}>{d.codeName}</option>
+                                        ))}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>직급</td>
+                                <td>
+                                    <select style={{width:'200px'}} className="form-select" id="userRank" name="userRank" onChange={userInfoChange}>
+                                        <option value={"default"} hidden>: : : 직급 선택 : : :</option>
+                                        {rank.map((r, index) => (
+                                            <option key={index} value={r.commonCode}>{r.codeName}</option>
+                                        ))}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>직책</td>
+                                <td>
+                                    <select style={{width:'200px'}} className="form-select" id="userPosition" name="userPosition" onChange={userInfoChange}>
+                                        <option value={"default"} hidden>: : : 직책 선택 : : :</option>
+                                        {position.map((p, index) => (
+                                            <option key={index} value={p.commonCode}>{p.codeName}</option>
+                                        ))}
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>권한</td>
+                                <td>
+                                    <select style={{width:'200px'}} className="form-select" id="userAuthority" name="userAuthority" onChange={userInfoChange}>
+                                    <option value={"default"} hidden>: : : 권한 선택 : : :</option>
+                                    {authority.map((a, index) => (
+                                            <option key={index} value={a.commonCode}>{a.codeName}</option>
+                                        ))}
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </StyledTable><br/><br/><br/>
+                    <div>
+                        <button type="button" className="btn btn btn-primary" id="userRegBtn" style={{marginLeft:"40%", float:"left"}} onClick={regUserInfo}>등록</button>
+                        <Link to={'/Admin/UserList'}>
+                            <button type="button" className="btn btn btn-secondary" id="cancle" style={{marginLeft:"20px", float:"left"}}>취소</button>
+                        </Link>
+                    </div><br/>
+                </StyledForm>
+            </ComponentCard>           
         </div>
     );
 };

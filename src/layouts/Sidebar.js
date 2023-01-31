@@ -51,6 +51,11 @@ const Admin = [
     href: "/Admin/CCodeList",
     icon: "bi bi-speedometer2",
   },
+  {
+    title: "부서 관리",
+    href: "/Admin/DeptManage",
+    icon: "bi bi-speedometer2",
+  },
 ];
 
 const defalutSideBar = [
