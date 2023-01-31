@@ -3,7 +3,7 @@
 const Starter = () => {
   return (
     <div>
-      Admin 시작페이지
+     HR 시작페이지
     </div>
   );
 };
