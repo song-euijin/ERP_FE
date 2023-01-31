@@ -1,6 +1,14 @@
-import { Button, Nav, NavItem } from "reactstrap";
+import { Button, 
+         Nav, 
+         NavItem,
+         Accordion,
+         AccordionBody,
+         AccordionHeader,
+         AccordionItem } from "reactstrap";
+
 import Logo from "./Logo";
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const EAS = [
   {
@@ -122,102 +130,147 @@ const Sidebar = () => {
   const PMSnumber = location.pathname.lastIndexOf("PMS");
   const Adminnumber = location.pathname.lastIndexOf("Admin");
 
+  const [open, setOpen] = useState('');
+  const toggle = (id) => {
+    if (open === id) {
+      setOpen();
+    } else {
+      setOpen(id);
+    }
+  };
+
   return (
-    <div className="p-3">
-      <div className="d-flex align-items-center">
-        <Logo /> 
-        {/* 세연로고  */}
-        <Button
-          close
-          size="sm"
-          className="ms-auto d-lg-none"
-          onClick={() => showMobilemenu()}
-        ></Button>
+    <>
+      <div className="p-3">
+        <div className="d-flex align-items-center">
+          <Logo /> 
+          {/* 세연로고  */}
+          <Button
+            close
+            size="sm"
+            className="ms-auto d-lg-none"
+            onClick={() => showMobilemenu()}
+          ></Button>
+        </div>
+        <div className="pt-4 mt-2">
+          <Nav vertical className="sidebarNav">
+            {EASnumber >= 1
+              ? EAS.map((navi, index) => (
+                  <NavItem key={index} className="sidenav-bg">
+                    <Link
+                      to={navi.href}
+                      className={
+                        location.pathname === navi.href
+                          ? "text-primary nav-link py-3"
+                          : "nav-link text-secondary py-3"
+                      }
+                    >
+                      <i className={navi.icon}></i>
+                      <span className="ms-3 d-inline-block">{navi.title}</span>
+                    </Link>
+                  </NavItem>
+                ))
+              : CRMnumber >= 1
+              ? CRM.map((navi, index) => (
+                  <NavItem key={index} className="sidenav-bg">
+                    <Link
+                      to={navi.href}
+                      className={
+                        location.pathname === navi.href
+                          ? "text-primary nav-link py-3"
+                          : "nav-link text-secondary py-3"
+                      }
+                    >
+                      <i className={navi.icon}></i>
+                      <span className="ms-3 d-inline-block">{navi.title}</span>
+                    </Link>
+                  </NavItem>
+                ))
+              : PMSnumber >= 1
+              ? PMS.map((navi, index) => (
+                  <NavItem key={index} className="sidenav-bg">
+                    <Link
+                      to={navi.href}
+                      className={
+                        location.pathname === navi.href
+                          ? "text-primary nav-link py-3"
+                          : "nav-link text-secondary py-3"
+                      }
+                    >
+                      <i className={navi.icon}></i>
+                      <span className="ms-3 d-inline-block">{navi.title}</span>
+                    </Link>
+                  </NavItem>
+                ))
+              : Adminnumber >= 1
+              ? Admin.map((navi, index) => (
+                  <NavItem key={index} className="sidenav-bg">
+                    <Link
+                      to={navi.href}
+                      className={
+                        location.pathname === navi.href
+                          ? "text-primary nav-link py-3"
+                          : "nav-link text-secondary py-3"
+                      }
+                    >
+                      <i className={navi.icon}></i>
+                      <span className="ms-3 d-inline-block">{navi.title}</span>
+                    </Link>
+                  </NavItem>
+                ))
+              : defalutSideBar.map((navi, index) => (
+                  <NavItem key={index} className="sidenav-bg">
+                    <Link
+                      to={navi.href}
+                      className={
+                        location.pathname === navi.href
+                          ? "text-primary nav-link py-3"
+                          : "nav-link text-secondary py-3"
+                      }
+                    >
+                      <i className={navi.icon}></i>
+                      <span className="ms-3 d-inline-block">{navi.title}</span>
+                    </Link>
+                  </NavItem>
+                ))}
+          </Nav>
+        </div>
+        <div>
+          <Accordion flush open={open} toggle={toggle}>
+            <AccordionItem>
+              <AccordionHeader targetId="1" style={{backgroundColor:'white'}}>Accordion Item 1</AccordionHeader>
+              <AccordionBody accordionId="1" style={{backgroundColor:'white'}}>
+                <strong>This is the first item&#39;s accordion body.</strong>
+                You can modify any of this with custom CSS or overriding our default
+                variables. It&#39;s also worth noting that just about any HTML can
+                go within the <code>.accordion-body</code>, though the transition
+                does limit overflow.
+              </AccordionBody>
+            </AccordionItem>
+            <AccordionItem>
+              <AccordionHeader targetId="2">Accordion Item 2</AccordionHeader>
+              <AccordionBody accordionId="2">
+                <strong>This is the second item&#39;s accordion body.</strong>
+                You can modify any of this with custom CSS or overriding our default
+                variables. It&#39;s also worth noting that just about any HTML can
+                go within the <code>.accordion-body</code>, though the transition
+                does limit overflow.
+              </AccordionBody>
+            </AccordionItem>
+            <AccordionItem>
+              <AccordionHeader targetId="3">Accordion Item 3</AccordionHeader>
+              <AccordionBody accordionId="3">
+                <strong>This is the third item&#39;s accordion body.</strong>
+                You can modify any of this with custom CSS or overriding our default
+                variables. It&#39;s also worth noting that just about any HTML can
+                go within the <code>.accordion-body</code>, though the transition
+                does limit overflow.
+              </AccordionBody>
+            </AccordionItem>
+          </Accordion>
+        </div>
       </div>
-      <div className="pt-4 mt-2">
-        <Nav vertical className="sidebarNav">
-          {EASnumber >= 1
-            ? EAS.map((navi, index) => (
-                <NavItem key={index} className="sidenav-bg">
-                  <Link
-                    to={navi.href}
-                    className={
-                      location.pathname === navi.href
-                        ? "text-primary nav-link py-3"
-                        : "nav-link text-secondary py-3"
-                    }
-                  >
-                    <i className={navi.icon}></i>
-                    <span className="ms-3 d-inline-block">{navi.title}</span>
-                  </Link>
-                </NavItem>
-              ))
-            : CRMnumber >= 1
-            ? CRM.map((navi, index) => (
-                <NavItem key={index} className="sidenav-bg">
-                  <Link
-                    to={navi.href}
-                    className={
-                      location.pathname === navi.href
-                        ? "text-primary nav-link py-3"
-                        : "nav-link text-secondary py-3"
-                    }
-                  >
-                    <i className={navi.icon}></i>
-                    <span className="ms-3 d-inline-block">{navi.title}</span>
-                  </Link>
-                </NavItem>
-              ))
-            : PMSnumber >= 1
-            ? PMS.map((navi, index) => (
-                <NavItem key={index} className="sidenav-bg">
-                  <Link
-                    to={navi.href}
-                    className={
-                      location.pathname === navi.href
-                        ? "text-primary nav-link py-3"
-                        : "nav-link text-secondary py-3"
-                    }
-                  >
-                    <i className={navi.icon}></i>
-                    <span className="ms-3 d-inline-block">{navi.title}</span>
-                  </Link>
-                </NavItem>
-              ))
-            : Adminnumber >= 1
-            ? Admin.map((navi, index) => (
-                <NavItem key={index} className="sidenav-bg">
-                  <Link
-                    to={navi.href}
-                    className={
-                      location.pathname === navi.href
-                        ? "text-primary nav-link py-3"
-                        : "nav-link text-secondary py-3"
-                    }
-                  >
-                    <i className={navi.icon}></i>
-                    <span className="ms-3 d-inline-block">{navi.title}</span>
-                  </Link>
-                </NavItem>
-              ))
-            : defalutSideBar.map((navi, index) => (
-                <NavItem key={index} className="sidenav-bg">
-                  <Link
-                    to={navi.href}
-                    className={
-                      location.pathname === navi.href
-                        ? "text-primary nav-link py-3"
-                        : "nav-link text-secondary py-3"
-                    }
-                  >
-                    <i className={navi.icon}></i>
-                    <span className="ms-3 d-inline-block">{navi.title}</span>
-                  </Link>
-                </NavItem>
-              ))}
-        </Nav>
-      </div>
-    </div>
+    </>
   );
 };
 
