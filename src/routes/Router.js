@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 
-/***** Pages!!!!! ****/
+/***** Pages ****/
 
 const Starter = lazy(() => import("../views/Starter.js"));
 const HRStarter = lazy(() => import("../views/HR/Starter.js"));
