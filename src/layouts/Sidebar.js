@@ -126,7 +126,7 @@ const Sidebar = () => {
     <div className="p-3">
       <div className="d-flex align-items-center">
         <Logo />
-        {/* 세연로고  */}
+        {/* 세연로고 !! */}
         <Button
           close
           size="sm"
