@@ -9,7 +9,7 @@ import DeptManage from "../views/Admin/DeptManage.js";
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 
-/***** Pages!!!!! ****/
+/***** Pages ****/
 
 const Starter = lazy(() => import("../views/Starter.js"));
 const EASStarter = lazy(() => import("../views/EAS/Starter.js"));
@@ -27,7 +27,7 @@ const Tables = lazy(() => import("../views/ui/Tables"));
 const Forms = lazy(() => import("../views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 
-/*****Routes!!!******/
+/*****Routes******/
 
 const ThemeRoutes = [
   {
