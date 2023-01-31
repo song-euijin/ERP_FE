@@ -63,106 +63,95 @@ const CCodeReg = () => {
 
   return (
     <div>
-      <div className="col-lg-12" style={{ width: "850px" }}>
-        <div className="card">
-          <h6 className="border-bottom p-3 mb-0 card-title">
-            <i className="bi bi-card-text me-2"> </i>코드 등록
-          </h6>
-          <div className="card-body">
-            <StyledForm id="userRegForm" style={{ width: "800px" }}>
-              <StyledTable id="userInfoTable">
-                <tbody>
-                  <tr>
-                    <td>상위코드</td>
-                    <td>
-                      <select
-                        id="landLineNumF"
-                        className="form-select"
-                        style={{
-                          marginRight: "10px",
-                          float: "left",
-                          width: "100px",
-                        }}
-                      >
-                        <option defaultChecked>02</option>
-                        {ucode.length < 1 ? (
-                          // eslint-disable-next-line jsx-a11y/heading-has-content
-                          <option>없음</option>
-                        ) : (
-                          // eslint-disable-next-line jsx-a11y/heading-has-content
-                          ucode.map((code, index) => (
-                            <option>{code.upper_COMMON_CODE}</option>
-                          ))
-                        )}{" "}
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>공통 코드</td>
-                    <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="common_CODE"
-                        name="common_CODE"
-                        onChange={onChangeInfo}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>공통 코드명</td>
-                    <td>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="code_NAME"
-                        name="code_NAME"
-                        onChange={onChangeInfo}
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>공통 코드 설명</td>
-                    <td>
-                      <textarea
-                        type="text"
-                        className="form-control"
-                        id="code_DESCRIPTION"
-                        name="code_DESCRIPTION"
-                        onChange={onChangeInfo}
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </StyledTable>
-              <br />
-              <br />
-              <br />
-              <div>
-                <button
-                  type="button"
-                  className="btn btn btn-primary"
-                  id="userRegBtn"
-                  style={{ marginLeft: "40%", float: "left" }}
-                >
-                  등록
-                </button>
-                <Link to={"/Admin/UserList"}>
-                  <button
-                    type="button"
-                    className="btn btn btn-secondary"
-                    id="cancle"
-                    style={{ marginLeft: "20px", float: "left" }}
-                  >
-                    취소
-                  </button>
-                </Link>
-              </div>
-              <br />
-            </StyledForm>
-          </div>
-        </div>
+      <StyledTable id="userInfoTable">
+        <tbody>
+          <tr>
+            <td>상위코드</td>
+            <td>
+              <select
+                id="landLineNumF"
+                className="form-select"
+                style={{
+                  marginRight: "10px",
+                  float: "left",
+                  width: "100px",
+                }}
+              >
+                <option defaultChecked>02</option>
+                {ucode.length < 1 ? (
+                  // eslint-disable-next-line jsx-a11y/heading-has-content
+                  <option>없음</option>
+                ) : (
+                  // eslint-disable-next-line jsx-a11y/heading-has-content
+                  ucode.map((code, index) => (
+                    <option>{code.upper_COMMON_CODE}</option>
+                  ))
+                )}{" "}
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>공통 코드</td>
+            <td>
+              <input
+                type="text"
+                className="form-control"
+                id="common_CODE"
+                name="common_CODE"
+                onChange={onChangeInfo}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>공통 코드명</td>
+            <td>
+              <input
+                type="text"
+                className="form-control"
+                id="code_NAME"
+                name="code_NAME"
+                onChange={onChangeInfo}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>공통 코드 설명</td>
+            <td>
+              <textarea
+                type="text"
+                className="form-control"
+                id="code_DESCRIPTION"
+                name="code_DESCRIPTION"
+                onChange={onChangeInfo}
+              />
+            </td>
+          </tr>
+        </tbody>
+      </StyledTable>
+      <br />
+      <br />
+      <br />
+      <div>
+        <button
+          type="button"
+          className="btn btn btn-primary"
+          id="userRegBtn"
+          style={{ marginLeft: "40%", float: "left" }}
+        >
+          등록
+        </button>
+        <Link to={"/Admin/UserList"}>
+          <button
+            type="button"
+            className="btn btn btn-secondary"
+            id="cancle"
+            style={{ marginLeft: "20px", float: "left" }}
+          >
+            취소
+          </button>
+        </Link>
       </div>
+      <br />
     </div>
   );
 };
