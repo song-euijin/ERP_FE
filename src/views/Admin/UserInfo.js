@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import userImg from '../../assets/images/users/user2.jpg';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import ComponentCard from '../../components/ComponentCard';
 
 const StyledTd = styled.td`
     width: 30%; 
@@ -201,7 +202,7 @@ const UserInfo = (args) => {
         console.log('부서>',modifyDept,'직급>',modifyRank,'직책>',modifyPosition,'권한>',modifyAuthority,'상태>',modifyStatus );
         axios.post("http://localhost:8080/CMN/userModify.do", params)
         .then(function() {
-            alert('사용자 수정이 정상적으로 처리되었습니다.');
+            alert('사용자 수정이 정상적으로 처리되었습니다!!!!!!.');
             toggle();
             window.location.replace('/Admin/UserInfo?userId='+getUserId);
           })
@@ -212,139 +213,136 @@ const UserInfo = (args) => {
     
 
 return (
-    <div>
-           <div className="card">
-                <h6 className="border-bottom p-3 mb-0 card-title"><i className="bi bi-card-text me-2"></i>사원 정보</h6>
-                <div className="card-body">
-                    <div style={{display:"block", height:"50px"}}>
-                        <Link to={'/Admin/UserList'}>
-                            <button type="button" className="btn btn btn-secondary" id="back" style={{float:"right", marginBottom:"10px", marginLeft:"10px"}}>뒤로</button>
-                        </Link>
-                        <button type="button" className="btn btn btn-primary" id="modifyBtn" style={{float:"right", marginBottom:"10px"}} onClick={modifyBtn}>수정</button>
-                    </div>
-                    <Modal isOpen={modal} toggle={toggle} {...args}>
-                        <ModalHeader toggle={toggle}>사용자 정보 수정</ModalHeader>
-                        <ModalBody>
-                            {user.map((info, index)=> (
-                                <table key={index} style={{borderSpacing: '5px 10px', borderCollapse:'separate'}}>
-                                    <tbody>
-                                        <tr>
-                                            <td>아이디</td>
-                                            <td><input type="text" className="form-control" id="userId" name="userId" style={{width:"200px", float:"left", backgroundColor: "lightgrey"}} value={info.userId} readOnly/></td>
-                                        </tr>
-                                        <tr>
-                                            <td>소속 부서</td>
-                                            <td>
-                                                <select style={{width:'200px'}} className="form-select" id="userDept" name="userDept" onChange={onChangeInfo}>
-                                                    {dept.map((d, index) => (
-                                                        <option key={index} value={d.commonCode} selected={info.userDept === d.codeName}>{d.codeName}</option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>직급</td>
-                                            <td>
-                                                <select style={{width:'200px'}} className="form-select" id="userRank" name="userRank" onChange={onChangeInfo}>
-                                                    {rank.map((r, index) => (
-                                                        <option key={index} value={r.commonCode} selected={info.userRank === r.codeName}>{r.codeName}</option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>직책</td>
-                                            <td>
-                                                <select style={{width:'200px'}} className="form-select" id="userPosition" name="userPosition" onChange={onChangeInfo}>
-                                                    {position.map((p, index) => (
-                                                        <option key={index} value={p.commonCode} selected={info.userPosition === p.codeName}>{p.codeName}</option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>권한</td>
-                                            <td>
-                                                <select style={{width:'200px'}} className="form-select" id="userAuthority" name="userAuthority" onChange={onChangeInfo}>
-                                                {authority.map((a, index) => (
-                                                        <option key={index} value={a.commonCode} selected={info.userAuthority === a.codeName}>{a.codeName}</option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>상태</td>
-                                            <td>
-                                                <select style={{width:'200px'}} className="form-select" id="userStatus" name="userStatus" onChange={onChangeInfo}>
-                                                {status.map((s, index) => (
-                                                        <option key={index} value={s.commonCode} selected={info.userStatus === s.codeName}>{s.codeName}</option>
-                                                    ))}
-                                                </select>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                   
-                                </table>
-                            ))}
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary" onClick={onClickModify}>
-                                수정
-                            </Button>{' '}
-                            <Button color="secondary" onClick={toggle}>
-                                취소
-                            </Button>
-                        </ModalFooter>
-                    </Modal>
-                    <img alt='user1' src={userImg} style={{width:"25%", height:"80%", marginLeft:"2%"}} />
-                    <table className="table table-bordered table-hover" style={{width:"70%", height:"80%", float:"right"}}>
-                        {user.map((info, index) => (
-                            <tbody key={index}>  
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>이름</StyledTd>
-                                <td style={{width:"70%"}}>{info.userName}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>아이디</StyledTd>
-                                <td style={{width:"70%"}}>{info.userId}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>부서</StyledTd>
-                                <td style={{width:"70%"}}>{info.userDept}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>직급</StyledTd>
-                                <td style={{width:"70%"}}>{info.userRank}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>직책</StyledTd>
-                                <td style={{width:"70%"}}>{info.userPosition}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>권한</StyledTd>
-                                <td style={{width:"70%"}}>{info.userAuthority}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>상태</StyledTd>
-                                <td style={{width:"70%"}}>{info.userStatus}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>연락처</StyledTd>
-                                <td style={{width:"70%"}}>{info.userPhone}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>내선번호</StyledTd>
-                                <td style={{width:"70%"}}>{info.userLandLineNumber}</td>
-                            </tr>
-                            <tr>
-                                <StyledTd style={{backgroundColor:"#2962ff"}}>주소</StyledTd>
-                                <td style={{width:"70%"}}>{info.userAddr} {info.userAddrDetail}</td>
-                            </tr>
-                        </tbody>
+        <div>
+            <ComponentCard title={'사용자 정보'} >
+                <div style={{display:"block", height:"50px"}}>
+                    <Link to={'/Admin/UserList'}>
+                        <button type="button" className="btn btn btn-secondary" id="back" style={{float:"right", marginBottom:"10px", marginLeft:"10px"}}>뒤로</button>
+                    </Link>
+                    <button type="button" className="btn btn btn-primary" id="modifyBtn" style={{float:"right", marginBottom:"10px"}} onClick={modifyBtn}>수정</button>
+                </div>
+                <Modal isOpen={modal} toggle={toggle} {...args}>
+                    <ModalHeader toggle={toggle} tag="h6">사용자 정보 수정</ModalHeader>
+                    <ModalBody>
+                        {user.map((info, index)=> (
+                            <table key={index} style={{borderSpacing: '5px 10px', borderCollapse:'separate'}}>
+                                <tbody>
+                                    <tr>
+                                        <td>아이디</td>
+                                        <td><input type="text" className="form-control" id="userId" name="userId" style={{width:"200px", float:"left", backgroundColor: "lightgrey"}} value={info.userId} readOnly/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>소속 부서</td>
+                                        <td>
+                                            <select style={{width:'200px'}} className="form-select" id="userDept" name="userDept" onChange={onChangeInfo}>
+                                                {dept.map((d, index) => (
+                                                    <option key={index} value={d.commonCode} selected={info.userDept === d.codeName}>{d.codeName}</option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>직급</td>
+                                        <td>
+                                            <select style={{width:'200px'}} className="form-select" id="userRank" name="userRank" onChange={onChangeInfo}>
+                                                {rank.map((r, index) => (
+                                                    <option key={index} value={r.commonCode} selected={info.userRank === r.codeName}>{r.codeName}</option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>직책</td>
+                                        <td>
+                                            <select style={{width:'200px'}} className="form-select" id="userPosition" name="userPosition" onChange={onChangeInfo}>
+                                                {position.map((p, index) => (
+                                                    <option key={index} value={p.commonCode} selected={info.userPosition === p.codeName}>{p.codeName}</option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>권한</td>
+                                        <td>
+                                            <select style={{width:'200px'}} className="form-select" id="userAuthority" name="userAuthority" onChange={onChangeInfo}>
+                                            {authority.map((a, index) => (
+                                                    <option key={index} value={a.commonCode} selected={info.userAuthority === a.codeName}>{a.codeName}</option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>상태</td>
+                                        <td>
+                                            <select style={{width:'200px'}} className="form-select" id="userStatus" name="userStatus" onChange={onChangeInfo}>
+                                            {status.map((s, index) => (
+                                                    <option key={index} value={s.commonCode} selected={info.userStatus === s.codeName}>{s.codeName}</option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                
+                            </table>
                         ))}
-                    </table>
-                </div>
-                </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={onClickModify}>
+                            수정
+                        </Button>{' '}
+                        <Button color="secondary" onClick={toggle}>
+                            취소
+                        </Button>
+                    </ModalFooter>
+                </Modal>
+                <img alt='user1' src={userImg} style={{width:"25%", height:"80%", marginLeft:"2%"}} />          
+                <table className="table table-bordered table-hover" style={{width:"70%", height:"80%", float:"right"}}>
+                    {user.map((info, index) => (
+                        <tbody key={index}>  
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>이름</StyledTd>
+                            <td style={{width:"70%"}}>{info.userName}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>아이디</StyledTd>
+                            <td style={{width:"70%"}}>{info.userId}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>부서</StyledTd>
+                            <td style={{width:"70%"}}>{info.userDept}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>직급</StyledTd>
+                            <td style={{width:"70%"}}>{info.userRank}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>직책</StyledTd>
+                            <td style={{width:"70%"}}>{info.userPosition}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>권한</StyledTd>
+                            <td style={{width:"70%"}}>{info.userAuthority}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>상태</StyledTd>
+                            <td style={{width:"70%"}}>{info.userStatus}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>연락처</StyledTd>
+                            <td style={{width:"70%"}}>{info.userPhone}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>내선번호</StyledTd>
+                            <td style={{width:"70%"}}>{info.userLandLineNumber}</td>
+                        </tr>
+                        <tr>
+                            <StyledTd style={{backgroundColor:"#2962ff"}}>주소</StyledTd>
+                            <td style={{width:"70%"}}>{info.userAddr} {info.userAddrDetail}</td>
+                        </tr>
+                    </tbody>
+                    ))}
+                </table>      
+            </ComponentCard>      
         </div>
     );
 };

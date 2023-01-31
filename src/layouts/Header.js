@@ -4,14 +4,24 @@ import {
   Navbar,
   Collapse,
   Nav,
+  NavItem,
+  NavbarBrand,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Dropdown,
+  Button,
 } from "reactstrap";
+import { ReactComponent as LogoWhite } from "../assets/images/logos/xtremelogowhite.svg";
+import user1 from "../assets/images/users/user1.jpg";
 
 const Header = () => {
-  const [isOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
+
   let location = useLocation();
 
   const EASnumber = location.pathname.lastIndexOf('EAS');
@@ -32,7 +42,7 @@ const Header = () => {
               : '시스템 선택'}
             </DropdownToggle>
             <DropdownMenu end>
-            <Link to="/EAS/starter" className="nav-link">
+            <Link to="EAS/starter" className="nav-link">
             <DropdownItem>EAS</DropdownItem>
             </Link>
             <Link to="/CRM/starter" className="nav-link">

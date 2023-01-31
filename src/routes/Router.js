@@ -3,6 +3,8 @@ import { Navigate } from "react-router-dom";
 import UserInfo from "../views/Admin/UserInfo.js";
 import UserList from "../views/Admin/UserList.js";
 import UserReg from "../views/Admin/UserReg.js";
+import CCodeList from "../views/Admin/CCodeList.js";
+import DeptManage from "../views/Admin/DeptManage.js";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
@@ -42,6 +44,8 @@ const ThemeRoutes = [
       { path: "/Admin/UserList", exact: true, element: <UserList /> },
       { path: "/Admin/UserReg", exact: true, element: <UserReg /> },
       { path: "/Admin/UserInfo", exact: true, element: <UserInfo /> },
+      { path: "/Admin/CCodeList", exact: true, element: <CCodeList /> },
+      { path: "/Admin/DeptManage", exact: true, element: <DeptManage /> },
       { path: "/about", exact: true, element: <About /> },
       { path: "/alerts", exact: true, element: <Alerts /> },
       { path: "/badges", exact: true, element: <Badges /> },
