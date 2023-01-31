@@ -27,39 +27,7 @@ const PMS = [
     title: "프로젝트 목록",
     href: "/PMS/ProjectList",
     icon: "bi bi-speedometer2",
-<<<<<<< HEAD
-  },
-];
-
-const Admin = [
-  {
-    title: "Admin 메뉴[수정필요]",
-    href: "/Admin/starter",
-    icon: "bi bi-speedometer2",
-  },
-  {
-    title: "사용자 목록",
-    href: "/Admin/UserList",
-    icon: "bi bi-speedometer2",
-  },
-  {
-    title: "사용자 등록",
-    href: "/Admin/UserReg",
-    icon: "bi bi-speedometer2",
-  },
-  {
-    title: "공통 코드 목록",
-    href: "/Admin/CCodeList",
-    icon: "bi bi-speedometer2",
-  },
-  {
-    title: "부서 관리",
-    href: "/Admin/DeptManage",
-    icon: "bi bi-speedometer2",
-  },
-=======
   }
->>>>>>> 5ceedfab1ba1a9054ddf921f317473814f33b189
 ];
 
 const defalutSideBar = [
