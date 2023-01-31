@@ -120,30 +120,7 @@ const CCodeReg = () => {
           </tr>
         </tbody>
       </StyledTable>
-      <br />
-      <br />
-      <br />
-      <div>
-        <button
-          type="button"
-          className="btn btn btn-primary"
-          id="userRegBtn"
-          style={{ marginLeft: "40%", float: "left" }}
-        >
-          등록
-        </button>
-        <Link to={"/Admin/UserList"}>
-          <button
-            type="button"
-            className="btn btn btn-secondary"
-            id="cancle"
-            style={{ marginLeft: "20px", float: "left" }}
-          >
-            취소
-          </button>
-        </Link>
-      </div>
-      <br />
+      <div></div>
     </div>
   );
 };

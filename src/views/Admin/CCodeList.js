@@ -37,8 +37,6 @@ const CCodeList = () => {
             <i className="bi bi-card-text me-2"> </i>공통 코드 목록
           </h6>
           <div className="card-body"></div>
-          <CCodeHead></CCodeHead>
-          <CCodeReg></CCodeReg>
           <CCodeDetail></CCodeDetail>
         </div>
       </div>
@@ -46,12 +44,9 @@ const CCodeList = () => {
   );
 };
 
-const CCodeHead = () => {
-  return <div></div>;
-};
-
 const CCodeDetail = () => {
-  //사용자 목록
+  const Head = { display: "flex" };
+  const Head_BT = { width: "30%", display: "flex" }; //사용자 목록
   const [codes, setCodes] = useState([
     {
       upper_COMMON_CODE: "",
@@ -107,43 +102,76 @@ const CCodeDetail = () => {
   return (
     <div>
       <div className="card-body">
-        <Input
-          type="select"
-          style={{ width: "150px", display: "inline", marginRight: "10px" }}
-          onChange={onChangeSearchKey}
-        >
-          <option value={"upper_COMMON_CODE"}>상위 공통 코드</option>
-          <option value={"common_CODE"}>공통 코드</option>
-          <option value={"code_NAME"}>공통 코드명</option>
-          <option value={"code_DESCRIPTION"}>코드 설명</option>
-          <option value={"code_REG_DATE"}>등록 일자</option>
-          <option value={"code_MODIFY_DATE"}>수정 일자</option>
-        </Input>
-        <Input
-          type={"text"}
-          style={{ width: "500px", display: "inline" }}
-          value={searchValue}
-          onChange={onChangeSearchValue}
-          placeholder={"Search..."}
-        ></Input>
-        <button
-          type={"button"}
-          className="btn btn btn-danger"
-          style={{ float: "right" }}
-        >
-          삭제
-        </button>
-        <Link to={"/Admin/UserModify?userId="}>
-          <button
-            type={"button"}
-            className="btn btn btn-primary"
-            style={{ float: "right", marginRight: "10px" }}
-          >
-            수정
-          </button>
-        </Link>
+        <div style={Head}>
+          <div>
+            <Input
+              type="select"
+              style={{ width: "150px", display: "inline", marginRight: "10px" }}
+              onChange={onChangeSearchKey}
+            >
+              <option value={"upper_COMMON_CODE"}>상위 공통 코드</option>
+              <option value={"common_CODE"}>공통 코드</option>
+              <option value={"code_NAME"}>공통 코드명</option>
+              <option value={"code_DESCRIPTION"}>코드 설명</option>
+              <option value={"code_REG_DATE"}>등록 일자</option>
+              <option value={"code_MODIFY_DATE"}>수정 일자</option>
+            </Input>
+            <Input
+              type={"text"}
+              style={{ width: "500px", display: "inline" }}
+              value={searchValue}
+              onChange={onChangeSearchValue}
+              placeholder={"Search..."}
+            ></Input>
+          </div>
+          <div style={Head_BT}>
+            <table>
+              <tr>
+                <td>
+                  <button
+                    type={"button"}
+                    className="btn btn btn-outline-success"
+                    style={{ float: "right" }}
+                  >
+                    추가
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type={"button"}
+                    className="btn btn btn-outline-warning"
+                    style={{ float: "right" }}
+                  >
+                    수정
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type={"button"}
+                    className="btn btn btn-outline-secondary"
+                    style={{ float: "right" }}
+                  >
+                    지우기
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type={"button"}
+                    className="btn btn btn-outline-danger"
+                    style={{ float: "right" }}
+                  >
+                    삭제
+                  </button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
         <br />
         <br />
+
+        <CCodeReg></CCodeReg>
+
         <table className="table table-bordered table-hover">
           <StyledThead>
             <tr>
