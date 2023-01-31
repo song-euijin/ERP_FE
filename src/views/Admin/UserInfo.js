@@ -296,7 +296,7 @@ return (
                             </Button>
                         </ModalFooter>
                     </Modal>
-                    <img alt='user1' src={userImg} style={{width:"25%", height:"80%", marginLeft:"2%"}} />
+                    <img alt='user1' src={userImg} style={{width:"25%", height:"80%", marginLeft:"2%"}} />          
                     <table className="table table-bordered table-hover" style={{width:"70%", height:"80%", float:"right"}}>
                         {user.map((info, index) => (
                             <tbody key={index}>  
@@ -342,9 +342,9 @@ return (
                             </tr>
                         </tbody>
                         ))}
-                    </table>
+                    </table>       
                 </div>
-                </div>
+            </div>
         </div>
     );
 };
