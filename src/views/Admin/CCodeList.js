@@ -69,7 +69,8 @@ const CCodeList = () => {
   useEffect(() => {
     axios
       .get(
-        "http://localhost:8080/CMN/userSearch.do?searchKey=" +
+        //       "http://192.168.0.17:5001/CMN/CodeList.do?searchKey=" +
+        "http://192.168.0.17:2000/CodeList.do?searchKey=" +
           searchKey +
           "&searchValue=" +
           searchValue
@@ -77,6 +78,7 @@ const CCodeList = () => {
       .then((response) => {
         setCodes(response.data);
       });
+    console.log(codes);
   }, [searchKey, searchValue]);
 
   return (
