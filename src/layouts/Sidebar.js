@@ -7,7 +7,7 @@ const EAS = [
     title: "EAS 메뉴[수정필요]",
     href: "/EAS/starter",
     icon: "bi bi-speedometer2",
-  }
+  },
 ];
 
 const CRM = [
@@ -15,7 +15,7 @@ const CRM = [
     title: "CRM 메뉴[수정필요]",
     href: "/CRM/starter",
     icon: "bi bi-speedometer2",
-  }
+  },
 ];
 const PMS = [
   {
@@ -27,7 +27,7 @@ const PMS = [
     title: "프로젝트 관리",
     href: "/PMS/ProjectList",
     icon: "bi bi-speedometer2",
-  }
+  },
 ];
 
 const Admin = [
@@ -45,7 +45,12 @@ const Admin = [
     title: "사용자 등록",
     href: "/Admin/UserReg",
     icon: "bi bi-speedometer2",
-  }
+  },
+  {
+    title: "공통 코드 목록",
+    href: "/Admin/CCodeList",
+    icon: "bi bi-speedometer2",
+  },
 ];
 
 const defalutSideBar = [
@@ -102,21 +107,20 @@ const defalutSideBar = [
 ];
 
 const Sidebar = () => {
-
   const showMobilemenu = () => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
   let location = useLocation();
 
-  const EASnumber = location.pathname.lastIndexOf('EAS');
-  const CRMnumber = location.pathname.lastIndexOf('CRM');
-  const PMSnumber = location.pathname.lastIndexOf('PMS');
-  const Adminnumber = location.pathname.lastIndexOf('Admin');
-  
+  const EASnumber = location.pathname.lastIndexOf("EAS");
+  const CRMnumber = location.pathname.lastIndexOf("CRM");
+  const PMSnumber = location.pathname.lastIndexOf("PMS");
+  const Adminnumber = location.pathname.lastIndexOf("Admin");
+
   return (
     <div className="p-3">
       <div className="d-flex align-items-center">
-        <Logo /> 
+        <Logo />
         {/* 세연로고  */}
         <Button
           close
@@ -127,77 +131,85 @@ const Sidebar = () => {
       </div>
       <div className="pt-4 mt-2">
         <Nav vertical className="sidebarNav">
-        {EASnumber >= 1 ? EAS.map((navi, index) => (
-            <NavItem key={index} className="sidenav-bg">
-              <Link
-                to={navi.href}
-                className={
-                  location.pathname === navi.href
-                    ? "text-primary nav-link py-3"
-                    : "nav-link text-secondary py-3"
-                }
-              >
-                <i className={navi.icon}></i>
-                <span className="ms-3 d-inline-block">{navi.title}</span>
-              </Link>
-            </NavItem>
-          )) : CRMnumber >= 1 ? CRM.map((navi, index) => (
-            <NavItem key={index} className="sidenav-bg">
-              <Link
-                to={navi.href}
-                className={
-                  location.pathname === navi.href
-                    ? "text-primary nav-link py-3"
-                    : "nav-link text-secondary py-3"
-                }
-              >
-                <i className={navi.icon}></i>
-                <span className="ms-3 d-inline-block">{navi.title}</span>
-              </Link>
-            </NavItem>
-          )): PMSnumber >= 1 ? PMS.map((navi, index) => (
-            <NavItem key={index} className="sidenav-bg">
-              <Link
-                to={navi.href}
-                className={
-                  location.pathname === navi.href
-                    ? "text-primary nav-link py-3"
-                    : "nav-link text-secondary py-3"
-                }
-              >
-                <i className={navi.icon}></i>
-                <span className="ms-3 d-inline-block">{navi.title}</span>
-              </Link>
-            </NavItem>
-          )) : Adminnumber >= 1 ? Admin.map((navi, index) => (
-            <NavItem key={index} className="sidenav-bg">
-              <Link
-                to={navi.href}
-                className={
-                  location.pathname === navi.href
-                    ? "text-primary nav-link py-3"
-                    : "nav-link text-secondary py-3"
-                }
-              >
-                <i className={navi.icon}></i>
-                <span className="ms-3 d-inline-block">{navi.title}</span>
-              </Link>
-            </NavItem>  
-          )):defalutSideBar.map((navi, index) => (
-            <NavItem key={index} className="sidenav-bg">
-              <Link
-                to={navi.href}
-                className={
-                  location.pathname === navi.href
-                    ? "text-primary nav-link py-3"
-                    : "nav-link text-secondary py-3"
-                }
-              >
-                <i className={navi.icon}></i>
-                <span className="ms-3 d-inline-block">{navi.title}</span>
-              </Link>
-            </NavItem>
-          ))}
+          {EASnumber >= 1
+            ? EAS.map((navi, index) => (
+                <NavItem key={index} className="sidenav-bg">
+                  <Link
+                    to={navi.href}
+                    className={
+                      location.pathname === navi.href
+                        ? "text-primary nav-link py-3"
+                        : "nav-link text-secondary py-3"
+                    }
+                  >
+                    <i className={navi.icon}></i>
+                    <span className="ms-3 d-inline-block">{navi.title}</span>
+                  </Link>
+                </NavItem>
+              ))
+            : CRMnumber >= 1
+            ? CRM.map((navi, index) => (
+                <NavItem key={index} className="sidenav-bg">
+                  <Link
+                    to={navi.href}
+                    className={
+                      location.pathname === navi.href
+                        ? "text-primary nav-link py-3"
+                        : "nav-link text-secondary py-3"
+                    }
+                  >
+                    <i className={navi.icon}></i>
+                    <span className="ms-3 d-inline-block">{navi.title}</span>
+                  </Link>
+                </NavItem>
+              ))
+            : PMSnumber >= 1
+            ? PMS.map((navi, index) => (
+                <NavItem key={index} className="sidenav-bg">
+                  <Link
+                    to={navi.href}
+                    className={
+                      location.pathname === navi.href
+                        ? "text-primary nav-link py-3"
+                        : "nav-link text-secondary py-3"
+                    }
+                  >
+                    <i className={navi.icon}></i>
+                    <span className="ms-3 d-inline-block">{navi.title}</span>
+                  </Link>
+                </NavItem>
+              ))
+            : Adminnumber >= 1
+            ? Admin.map((navi, index) => (
+                <NavItem key={index} className="sidenav-bg">
+                  <Link
+                    to={navi.href}
+                    className={
+                      location.pathname === navi.href
+                        ? "text-primary nav-link py-3"
+                        : "nav-link text-secondary py-3"
+                    }
+                  >
+                    <i className={navi.icon}></i>
+                    <span className="ms-3 d-inline-block">{navi.title}</span>
+                  </Link>
+                </NavItem>
+              ))
+            : defalutSideBar.map((navi, index) => (
+                <NavItem key={index} className="sidenav-bg">
+                  <Link
+                    to={navi.href}
+                    className={
+                      location.pathname === navi.href
+                        ? "text-primary nav-link py-3"
+                        : "nav-link text-secondary py-3"
+                    }
+                  >
+                    <i className={navi.icon}></i>
+                    <span className="ms-3 d-inline-block">{navi.title}</span>
+                  </Link>
+                </NavItem>
+              ))}
         </Nav>
       </div>
     </div>
