@@ -45,13 +45,8 @@ const Admin = [
     icon: "bi bi-speedometer2",
   },
   {
-    title: "사용자 목록",
-    href: "/Admin/UserList",
-    icon: "bi bi-speedometer2",
-  },
-  {
-    title: "사용자 등록",
-    href: "/Admin/UserReg",
+    title: "사용자 관리",
+    href: "#",
     icon: "bi bi-speedometer2",
   },
   {
@@ -64,6 +59,19 @@ const Admin = [
     href: "/Admin/DeptManage",
     icon: "bi bi-speedometer2",
   },
+];
+
+const User = [
+  {
+    title: "사용자 목록",
+    href: "/Admin/UserManage/UserList",
+    icon: "bi bi-speedometer2",
+  },
+  {
+    title: "사용자 등록",
+    href: "/Admin/UserManage/UserReg",
+    icon: "bi bi-speedometer2",
+  }
 ];
 
 const defalutSideBar = [
@@ -206,6 +214,7 @@ const Sidebar = () => {
               ? Admin.map((navi, index) => (
                   <NavItem key={index} className="sidenav-bg">
                     <Link
+                      key={index}
                       to={navi.href}
                       className={
                         location.pathname === navi.href
@@ -213,11 +222,33 @@ const Sidebar = () => {
                           : "nav-link text-secondary py-3"
                       }
                     >
-                      <i className={navi.icon}></i>
-                      <span className="ms-3 d-inline-block">{navi.title}</span>
+                      {navi.title.lastIndexOf('사용자') === 0 
+                        ? <Accordion flush open={open} toggle={toggle} style={{backgroundColor:"white"}}>
+                            <AccordionItem style={{listStyle:'none'}}>
+                              <AccordionHeader targetId="1">{navi.title}</AccordionHeader>
+                              <AccordionBody accordionId="1" style={{backgroundColor:'white'}}>
+                                {User.map((navi, index) => (
+                                  <NavItem key={index} className="sidenav-bg">
+                                    <Link
+                                      to={navi.href}
+                                      className={
+                                        location.pathname === navi.href
+                                          ? "text-primary nav-link py-3"
+                                          : "nav-link text-secondary py-3"
+                                      }
+                                    >
+                                      <span className="ms-3 d-inline-block" href={navi.href}>{navi.title}</span>
+                                    </Link>
+                                  </NavItem>
+                                ))}
+                              </AccordionBody>
+                            </AccordionItem>
+                          </Accordion>
+                        : <span className="ms-3 d-inline-block" onClick={toggle}>{navi.title}</span>
+                      }    
                     </Link>
                   </NavItem>
-                ))
+                ))  
               : defalutSideBar.map((navi, index) => (
                   <NavItem key={index} className="sidenav-bg">
                     <Link
@@ -234,41 +265,7 @@ const Sidebar = () => {
                   </NavItem>
                 ))}
           </Nav>
-        </div>
-        <div>
-          <Accordion flush open={open} toggle={toggle}>
-            <AccordionItem>
-              <AccordionHeader targetId="1" style={{backgroundColor:'white'}}>Accordion Item 1</AccordionHeader>
-              <AccordionBody accordionId="1" style={{backgroundColor:'white'}}>
-                <strong>This is the first item&#39;s accordion body.</strong>
-                You can modify any of this with custom CSS or overriding our default
-                variables. It&#39;s also worth noting that just about any HTML can
-                go within the <code>.accordion-body</code>, though the transition
-                does limit overflow.
-              </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-              <AccordionHeader targetId="2">Accordion Item 2</AccordionHeader>
-              <AccordionBody accordionId="2">
-                <strong>This is the second item&#39;s accordion body.</strong>
-                You can modify any of this with custom CSS or overriding our default
-                variables. It&#39;s also worth noting that just about any HTML can
-                go within the <code>.accordion-body</code>, though the transition
-                does limit overflow.
-              </AccordionBody>
-            </AccordionItem>
-            <AccordionItem>
-              <AccordionHeader targetId="3">Accordion Item 3</AccordionHeader>
-              <AccordionBody accordionId="3">
-                <strong>This is the third item&#39;s accordion body.</strong>
-                You can modify any of this with custom CSS or overriding our default
-                variables. It&#39;s also worth noting that just about any HTML can
-                go within the <code>.accordion-body</code>, though the transition
-                does limit overflow.
-              </AccordionBody>
-            </AccordionItem>
-          </Accordion>
-        </div>
+        </div>   
       </div>
     </>
   );

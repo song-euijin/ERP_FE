@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { postcodeScriptUrl } from "react-daum-postcode/lib/loadPostcode";
 import ComponentCard from '../../components/ComponentCard';
+import noSelImg from '../../assets/images/users/default_profile.jpg'
 
 const StyledForm = styled.form`
   background-color: white;
@@ -14,7 +15,7 @@ const StyledForm = styled.form`
 
 const StyledTable = styled.table`
   border-collapse: separate;
-  border-spacing: 5px 20px;
+  border-spacing: 10px 20px;
   table-layout: fixed;
   margin-left: auto;
   margin-right: auto;
@@ -101,7 +102,8 @@ const UserReg = () => {
         userDept: '',
         userRank: '',
         userPosition: '',
-        userAuthority: ''
+        userAuthority: '',
+        userImg: '',
     });
 
     const [selectPhone, setSelectPhone] = useState("010");
@@ -362,6 +364,9 @@ const UserReg = () => {
 
     // 유효성 검사 end
 
+    // 사용자 img 미리보기
+    const [fileImage, setFileImage] = useState('');
+
     // 사용자 등록 정보 세팅 start
     const userInfoChange =(e)=>{
         const {name, value} = e.target;
@@ -382,6 +387,14 @@ const UserReg = () => {
     
             let userIdVal = value.concat('@',companyInfo.map(cp=>(cp.companyDomain)));
             const nextInputs = { ...userInfo, [name]: userIdVal, };
+            setUserInfo(nextInputs);
+      
+        }else if(name === 'userImg'){
+            setFileImage(URL.createObjectURL(e.target.files[0]));
+            console.log(e.target.files[0].name);
+
+            let userImgVal = e.target.files[0].name;
+            const nextInputs = { ...userInfo, [name]: userImgVal, };
             setUserInfo(nextInputs);
       
         }else{
@@ -410,6 +423,7 @@ const UserReg = () => {
       params.append("userRank", userInfo.userRank);
       params.append("userPosition", userInfo.userPosition);
       params.append("userAuthority", userInfo.userAuthority);
+      params.append("userImg", userInfo.userImg);
       // 사용자 등록 정보 세팅 End
 
     // 사용자 등록 실행 Start
@@ -508,7 +522,7 @@ const UserReg = () => {
         axios.post("http://localhost:8080/CMN/userReg.do", params)
         .then(function() {
         alert('사용자 등록이 정상적으로 처리되었습니다.');
-        window.location.replace('/Admin/UserList');
+        window.location.replace('/Admin/UserManage/UserList');
         })
         .catch((error) => {
         console.log(error);
@@ -522,6 +536,17 @@ const UserReg = () => {
                 <StyledForm id="userRegForm">
                     <StyledTable id="userInfoTable">
                         <tbody>
+                            <tr>
+                                <td colSpan={5}>
+                                    <div style={{display:"flex", flexDirection: "column", alignItems: "center", marginBottom: "40px"}}>
+                                        {fileImage === "" ?
+                                            <img src={noSelImg} alt={noSelImg} style={{width:"200px", height:"200px"}}></img>
+                                            :<img src={fileImage} alt={noSelImg} style={{width:"200px", height:"200px"}}></img>
+                                        }
+                                        <input type="file" className="form-control" id="userImg" name="userImg" style={{width:"200px"}} onChange={userInfoChange}/>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>사용자 성</td>
                                 <td><input type="text" className="form-control" id="userFirstName" name="userFirstName" onChange={userInfoChange} onKeyUp={nameVaild}/></td>
@@ -651,7 +676,7 @@ const UserReg = () => {
                     </StyledTable><br/><br/><br/>
                     <div>
                         <button type="button" className="btn btn btn-primary" id="userRegBtn" style={{marginLeft:"40%", float:"left"}} onClick={regUserInfo}>등록</button>
-                        <Link to={'/Admin/UserList'}>
+                        <Link to={'/Admin/UserManage/UserList'}>
                             <button type="button" className="btn btn btn-secondary" id="cancle" style={{marginLeft:"20px", float:"left"}}>취소</button>
                         </Link>
                     </div><br/>
