@@ -9,13 +9,14 @@ import DeptManage from "../views/Admin/DeptManage.js";
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 
-/***** Pages!!!!! ****/
+/***** Pages ****/
 
 const Starter = lazy(() => import("../views/Starter.js"));
 const EASStarter = lazy(() => import("../views/EAS/Starter.js"));
 const CRMStarter = lazy(() => import("../views/CRM/Starter.js"));
 const PMSStarter = lazy(() => import("../views/PMS/Starter.js"));
 const ProjectList = lazy(() => import("../views/PMS/ProjectList.js"));
+const ProjectDashboard = lazy(() => import("../views/PMS/ProjectDashboard.js"));
 const AdminStarter = lazy(() => import("../views/Admin/Starter.js"));
 const About = lazy(() => import("../views/About.js"));
 const Alerts = lazy(() => import("../views/ui/Alerts"));
@@ -27,7 +28,7 @@ const Tables = lazy(() => import("../views/ui/Tables"));
 const Forms = lazy(() => import("../views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 
-/*****Routes******/
+/*****Routes******/////////
 
 const ThemeRoutes = [
   {
@@ -40,6 +41,7 @@ const ThemeRoutes = [
       { path: "/CRM/starter", exact: true, element: <CRMStarter /> },
       { path: "/PMS/starter", exact: true, element: <PMSStarter /> },
       { path: "/PMS/ProjectList", exact: true, element: <ProjectList /> },
+      { path: "/PMS/ProjectDashboard", exact: true, element: <ProjectDashboard /> },
       { path: "/Admin/starter", exact: true, element: <AdminStarter /> },
       { path: "/Admin/UserList", exact: true, element: <UserList /> },
       { path: "/Admin/UserReg", exact: true, element: <UserReg /> },
@@ -58,5 +60,5 @@ const ThemeRoutes = [
     ],
   },
 ];
-
+///
 export default ThemeRoutes;
