@@ -148,7 +148,7 @@ const CCodeDetail = () => {
     axios
       .get(
         //       "http://192.168.0.17:5001/CMN/CodeList.do?searchKey=" +
-        "http://192.168.0.17:2000/CodeList.do?searchKey=" +
+        "http://192.168.0.37:2000/CodeList.do?searchKey=" +
           searchKey +
           "&searchValue=" +
           searchValue
@@ -170,7 +170,7 @@ const CCodeDetail = () => {
   const codeAdd = (e) => {
     axios
       .post(
-        "http://192.168.0.17:2000/CodeRegist.do?COMMON_CODE=" +
+        "http://192.168.0.37:2000/CodeRegist.do?COMMON_CODE=" +
           cmm +
           "&UPPER_COMMON_CODE=" +
           up +
