@@ -14,11 +14,11 @@ import {
 } from "reactstrap";
 import customAxios from "../../components/axios/axios";
 import PmsChart from "./PmsChart";
+import ProjectUserList from "./ProjectUserList";
 
 const ProjectDashboard = () => {
-  //
 
-  console.log("ProjectDashboard");
+
   const location = useLocation();
   const index = location.state.projectIndex;
 
@@ -31,6 +31,9 @@ const ProjectDashboard = () => {
   const [cSelected, setCSelected] = useState([]);
   const [rSelected, setRSelected] = useState(1);
 
+  const [mangerList, setManagerList] = useState([]);
+  const [participantList, setParticipantList] = useState([]);
+
   const onCheckboxBtnClick = (selected) => {
     const index = cSelected.indexOf(selected);
     if (index < 0) {
@@ -41,7 +44,7 @@ const ProjectDashboard = () => {
     setCSelected([...cSelected]);
   };
   useEffect(() => {
-    console.log("dashboard useeffect");
+    
     customAxios({
       url: "/selectProject.do",
       method: "GET",
@@ -49,7 +52,7 @@ const ProjectDashboard = () => {
         projectIndex: index,
       },
     }).then((re) => {
-      console.log(re.data);
+      
       setProject({
         projectIndex: re.data.projectIndex,
         projectName: re.data.projectName,
@@ -60,9 +63,8 @@ const ProjectDashboard = () => {
     });
   }, []);
 
-  const projectClick = (item) => {
-    console.log(item);
-  };
+
+
   return (
     <>
       <div style={{overflow:"hidden"}}>
@@ -71,91 +73,7 @@ const ProjectDashboard = () => {
             <PmsChart project={project} setProject={setProject} />
           </Col>
           <Col sm="6" lg="6" xl="6" xxl="4">
-            <Card>
-              <CardBody>
-                <CardTitle tag="h5">
-                  프로젝트 참가자
-                  <i
-                    className="bi bi-person-plus"
-                    style={{
-                      position: "absolute",
-                      top: 10,
-                      right: 30,
-                      cursor: "pointer",
-                    }}
-                  ></i>
-                </CardTitle>
-                <CardSubtitle className="text-muted" tag="h6"></CardSubtitle>
-                <div style={{ height: "338px" }}>
-                  <Row
-                    style={{
-                      minHeight: "50%",
-                      maxHeight: "50%",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <Card>
-                      <CardBody>
-                        <CardTitle tag="h6">관리자 명단</CardTitle>
-                        <Container>
-                          <Row
-                            xs="4"
-                            style={{ color: "grey", fontWeight: "bold" }}
-                          >
-                            {/*관리자 명단 map*/}
-                            <Col>Max</Col>
-                            <Col>John</Col>
-                            <Col>Kim</Col>
-                            <Col>Angelina</Col>
-                            <Col>James</Col>
-                            <Col>Nick</Col>
-                            <Col>Mark</Col>
-                            <Col>Hol</Col>
-                          </Row>
-                        </Container>
-                      </CardBody>
-                    </Card>
-                  </Row>
-                  <Row
-                    style={{
-                      minHeight: "50%",
-                      maxHeight: "50%",
-                      overflowY: "auto",
-                    }}
-                  >
-                    <Card>
-                      <CardBody>
-                        <CardTitle tag="h6">참여자 명단</CardTitle>
-                        <Container>
-                          <Row
-                            xs="4"
-                            style={{ color: "grey", fontWeight: "bold" }}
-                          >
-                            {/*참여자 명단 map*/}
-                            <Col>Max</Col>
-                            <Col>John</Col>
-                            <Col>Kim</Col>
-                            <Col>Angelina</Col>
-                            <Col>James</Col>
-                            <Col>Nick</Col>
-                            <Col>Mark</Col>
-                            <Col>Hol</Col>
-                            <Col>Max</Col>
-                            <Col>John</Col>
-                            <Col>Kim</Col>
-                            <Col>Angelina</Col>
-                            <Col>James</Col>
-                            <Col>Nike</Col>
-                            <Col>Mark</Col>
-                            <Col>Hol</Col>
-                          </Row>
-                        </Container>
-                      </CardBody>
-                    </Card>
-                  </Row>
-                </div>
-              </CardBody>
-            </Card>
+          <ProjectUserList></ProjectUserList>
           </Col>
         </Row>
         <Row>
@@ -227,18 +145,6 @@ const ProjectDashboard = () => {
                       <td>Jacob</td>
                       <td>Thornton</td>
                       <td>@fat</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Larry</td>
-                      <td>the Bird</td>
-                      <td>@twitter</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Larry</td>
-                      <td>the Bird</td>
-                      <td>@twitter</td>
                     </tr>
                     <tr>
                       <th scope="row">3</th>

@@ -12,15 +12,12 @@ import {
   ModalFooter,
   Button,
 } from "reactstrap";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
 import React, { useState, useEffect } from "react";
 import customAxios from "../../components/axios/axios";
 
-
-
 const PmsChart = (props) => {
-
   const navigate = useNavigate();
   const [projectDescription, setProjectDescription] = useState(
     props.project.projectDescription
@@ -37,17 +34,17 @@ const PmsChart = (props) => {
   const deleteToggle = () => {
     setDeleteMoadl(!deleteModal);
   };
-  const deleteProject = () =>{
+  const deleteProject = () => {
     customAxios({
-      url:'deleteProject.do',
-      method:"POST",
-      params:{
+      url: "deleteProject.do",
+      method: "POST",
+      params: {
         projectIndex: props.project.projectIndex,
-      }
-    }).then((re)=>{
-      console.log(re.data)
-      navigate('/PMS/ProjectList');
-    })
+      },
+    }).then((re) => {
+      console.log(re.data);
+      navigate("/PMS/ProjectList");
+    });
   };
 
   const updateProject = () => {
@@ -81,7 +78,7 @@ const PmsChart = (props) => {
   const [c, setC] = useState(41);
   const [d, setD] = useState(16);
   const [e, setE] = useState(16);
-  const optionsLable = ["요청: ", "진행: ", "피드백: ", "보류: ", "완료: "];
+  const optionsLable = 123
   const Chartcolors = ["#369789", "#369789", "#154112", "#369789", "#369789"];
   const chartoptions = {
     // series: [
@@ -107,6 +104,17 @@ const PmsChart = (props) => {
 
     //   stroke: {
     //     curve: "smooth",
+    //       "Aug",
+    //       "June",
+    //       "July",
+    //       "Aug",
+    //       "June",
+    //       "July",
+    //       "Aug",
+    //       "June",
+    //       "July",
+    //       "July",
+    //       "July",
     //     width: 1,
     //   },
     //   xaxis: {
@@ -116,15 +124,12 @@ const PmsChart = (props) => {
     //       "March",
     //       "April",
     //       "May",
-    //       "June",
-    //       "July",
-    //       "Aug",
     //     ],
     //   },
     // },
 
     options: {
-      labels: optionsLable,
+      labels: ["요청: ", "진행: ", "피드백: ", "보류: ", "완료: "],
       colors: ["#232312", "#992211", "#3721de", "#13d8aa", "#009121"],
       grid: {
         padding: {
