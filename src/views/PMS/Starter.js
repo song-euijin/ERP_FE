@@ -2,8 +2,14 @@ import React, { useState, useEffect } from "react";
 import customAxios from "../../components/axios/axios";
 import { Col, Form, Label, Row, Button, Input, FormGroup } from "reactstrap";
 import { DatePicker } from "reactstrap-date-picker";
+import {  useNavigate } from "react-router-dom";
 
 const Starter = () => {
+
+  const navigate = useNavigate();
+
+  const [projectName,setPeojectName] = useState();
+  const [projectDescription,setProjectDescription] = useState();
   const [startDate, setStartDate] = useState(new Date().toISOString());
   const [endDate, setEndDate] = useState(new Date().toISOString());
   const [fmtstartDate, setFmtstartDate] = useState(undefined);
@@ -16,8 +22,30 @@ const Starter = () => {
     setEndDate(endDate);
     setFmtstartDate(formattedstartDate);
   };
+  const projectNameChange = e =>{
+    setPeojectName(e.target.value);
+  }
+  const projectDescriptionChange = e =>{
+    setProjectDescription(e.target.value);
+  }
 
   const createProject = () => {
+    if (projectName == null || projectName === "") {
+      alert("프로젝트 제목을 입력해주세요.");
+      return;
+    }
+    if (projectDescription == null || projectDescription === "") {
+      alert("프로젝트 설명을 입력해주세요.");
+      return;
+    }
+    if (startDate == null || startDate === "") {
+      alert("프로젝트 시작일자를 지정해주세요.");
+      return;
+    }
+    if (endDate == null || endDate === "") {
+      alert("프로젝트 마감일자를 지정해주세요.");
+      return;
+    }
     if (startDate > endDate) {
       alert("프로젝트 시작일자와 마감일자 형식이 올바르지 않습니다.");
       return;
@@ -26,17 +54,24 @@ const Starter = () => {
     customAxios({
       url:"/createProject.do",
       method:"POST",
-      data:{
-        foo:'diary',
-        startData:startDate,
-        endDate:endDate
+      params:{
+        projectName:projectName,
+        projectDescription:projectDescription,
+        projectStartDate:startDate,
+        projectEndDate:endDate
+        // projectStartData:startDate,
+        // projectEndDate:endDate
       }
     }).then(re=>{
-      alert(re.data);
+      alert('프로젝트가 생성되었습니다.');
+      navigate('/PMS/ProjectList');
+
+    }).catch(re=>{
+      console.log(projectName);
+      console.log(projectDescription);
+      console.log(startDate);
+      console.log(endDate);
     })
-
-
-
   }
 
   useEffect(() => {}, [fmtstartDate]);
@@ -52,6 +87,7 @@ const Starter = () => {
               name="projectName"
               placeholder="프로젝트 이름을 입력해주세요."
               type="text"
+              onChange={projectNameChange}
             />
           </FormGroup>
         </Col>
@@ -66,6 +102,7 @@ const Starter = () => {
           rows="5"
           placeholder="프로젝트 설명"
           style={{ resize: "none" }}
+          onChange={projectDescriptionChange}
         />
       </FormGroup>
       <Row>

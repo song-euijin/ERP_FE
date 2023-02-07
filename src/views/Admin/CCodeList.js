@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Input } from "reactstrap";
+import CCodeReg from "./CCodeReg";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -28,7 +29,24 @@ const StyledThead = styled.thead`
 `;
 
 const CCodeList = () => {
-  //사용자 목록
+  return (
+    <div>
+      <div className="col-lg-12">
+        <div className="card">
+          <h6 className="border-bottom p-3 mb-0 card-title">
+            <i className="bi bi-card-text me-2"> </i>공통 코드 목록
+          </h6>
+          <div className="card-body"></div>
+          <CCodeDetail></CCodeDetail>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CCodeDetail = () => {
+  const Head = { display: "flex" };
+  const Head_BT = { width: "30%", display: "flex" }; //사용자 목록
   const [codes, setCodes] = useState([
     {
       upper_COMMON_CODE: "",
@@ -69,7 +87,8 @@ const CCodeList = () => {
   useEffect(() => {
     axios
       .get(
-        "http://localhost:8080/CMN/userSearch.do?searchKey=" +
+        //       "http://192.168.0.17:5001/CMN/CodeList.do?searchKey=" +
+        "http://192.168.0.17:2000/CodeList.do?searchKey=" +
           searchKey +
           "&searchValue=" +
           searchValue
@@ -77,16 +96,14 @@ const CCodeList = () => {
       .then((response) => {
         setCodes(response.data);
       });
-  }, [searchKey, searchValue]);
+    console.log(codes);
+  }, [codes, searchKey, searchValue]);
 
   return (
     <div>
-      <div className="col-lg-12">
-        <div className="card">
-          <h6 className="border-bottom p-3 mb-0 card-title">
-            <i className="bi bi-card-text me-2"> </i>공통 코드 목록
-          </h6>
-          <div className="card-body">
+      <div className="card-body">
+        <div style={Head}>
+          <div>
             <Input
               type="select"
               style={{ width: "150px", display: "inline", marginRight: "10px" }}
@@ -106,70 +123,99 @@ const CCodeList = () => {
               onChange={onChangeSearchValue}
               placeholder={"Search..."}
             ></Input>
-            <button
-              type={"button"}
-              className="btn btn btn-danger"
-              style={{ float: "right" }}
-            >
-              삭제
-            </button>
-            <Link to={"/Admin/UserModify?userId="}>
-              <button
-                type={"button"}
-                className="btn btn btn-primary"
-                style={{ float: "right", marginRight: "10px" }}
-              >
-                수정
-              </button>
-            </Link>
-            <br />
-            <br />
-            <table className="table table-bordered table-hover">
-              <StyledThead>
-                <tr>
-                  <th style={{ width: "2%", textAlign: "center" }}>
-                    <input type={"checkbox"} />
-                  </th>
-                  <th style={{ width: "14%" }}>상위 공통 코드</th>
-                  <th style={{ width: "14%" }}>공통 코드</th>
-                  <th style={{ width: "14%" }}>공통 코드명</th>
-                  <th style={{ width: "14%" }}>코드 설명</th>
-                  <th style={{ width: "14%" }}>등록 일자</th>
-                  <th style={{ width: "14%" }}>수정 일자</th>
-                </tr>
-              </StyledThead>
-              <tbody>
-                {codes.length < 1 ? (
-                  <tr>
-                    <td colSpan={9} style={{ textAlign: "center" }}>
-                      검색 결과가 없습니다.
-                    </td>
-                  </tr>
-                ) : (
-                  codes.map((code, index) => (
-                    <tr key={index}>
-                      <td style={{ textAlign: "center" }}>
-                        <input type={"checkbox"} />
-                      </td>
-                      <td>{code.upper_COMMON_CODE}</td>
-                      <td className="target">
-                        <StyledLink
-                          to={"/Admin/UserInfo?userId=" + code.common_CODE}
-                        >
-                          {code.common_CODE}
-                        </StyledLink>
-                      </td>
-                      <td>{code.code_NAME}</td>
-                      <td>{code.code_DESCRIPTION}</td>
-                      <td>{code.code_REG_DATE}</td>
-                      <td>{code.code_MODIFY_DATE}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
+          </div>
+          <div style={Head_BT}>
+            <table>
+              <tr>
+                <td>
+                  <button
+                    type={"button"}
+                    className="btn btn btn-outline-success"
+                    style={{ float: "right" }}
+                  >
+                    추가
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type={"button"}
+                    className="btn btn btn-outline-warning"
+                    style={{ float: "right" }}
+                  >
+                    수정
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type={"button"}
+                    className="btn btn btn-outline-secondary"
+                    style={{ float: "right" }}
+                  >
+                    지우기
+                  </button>
+                </td>
+                <td>
+                  <button
+                    type={"button"}
+                    className="btn btn btn-outline-danger"
+                    style={{ float: "right" }}
+                  >
+                    삭제
+                  </button>
+                </td>
+              </tr>
             </table>
           </div>
         </div>
+        <br />
+        <br />
+
+        <CCodeReg></CCodeReg>
+
+        <table className="table table-bordered table-hover">
+          <StyledThead>
+            <tr>
+              <th style={{ width: "2%", textAlign: "center" }}>
+                <input type={"checkbox"} />
+              </th>
+              <th style={{ width: "14%" }}>상위 공통 코드</th>
+              <th style={{ width: "14%" }}>공통 코드</th>
+              <th style={{ width: "14%" }}>공통 코드명</th>
+              <th style={{ width: "14%" }}>코드 설명</th>
+              <th style={{ width: "14%" }}>등록 일자</th>
+              <th style={{ width: "14%" }}>수정 일자</th>
+            </tr>
+          </StyledThead>
+          <tbody>
+            {codes.length < 1 ? (
+              <tr>
+                <td colSpan={9} style={{ textAlign: "center" }}>
+                  검색 결과가 없습니다.
+                </td>
+              </tr>
+            ) : (
+              codes.map((code, index) => (
+                <tr key={index}>
+                  <td style={{ textAlign: "center" }}>
+                    <input type={"checkbox"} />
+                  </td>
+                  <td>{code.upper_COMMON_CODE}</td>
+                  <td className="target">
+                    <StyledLink
+                      to={"/Admin/UserInfo?userId=" + code.common_CODE}
+                    >
+                      {code.common_CODE}
+                    </StyledLink>
+                  </td>
+                  <td>{code.code_NAME}</td>
+                  <td>{code.code_DESCRIPTION}</td>
+                  <td>{code.code_REG_DATE}</td>
+                  <td>{code.code_MODIFY_DATE}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );
