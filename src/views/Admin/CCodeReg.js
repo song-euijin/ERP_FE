@@ -12,6 +12,14 @@ const StyledTable = styled.table`
   text-align: center;
 `;
 
+const StyledTB = styled.table`
+  border-collapse: separate;
+  border-spacing: 27px 5px;
+  table-layout: fixed;
+  margin-right: auto;
+  text-align: right;
+`;
+
 const CCodeReg = () => {
   //회사 직급, 직책 등 정보 불러오기 start
   const [ucode, setUCode] = useState([
