@@ -1,35 +1,8 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Input } from "reactstrap";
-import CCodeReg from "./CCodeReg";
-import userEvent from "@testing-library/user-event";
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: black;
-
-  &:focus,
-  &:hover,
-  &:visited,
-  &:link,
-  &:active {
-    text-decoration: none;
-  }
-  &:active {
-    color: blue;
-  }
-`;
-
-const StyledTB = styled.table`
-  border-collapse: separate;
-  border-spacing: 27px 5px;
-  table-layout: fixed;
-  margin-right: auto;
-  text-align: right;
-`;
 
 const StyledThead = styled.thead`
   text-align: center;
@@ -69,27 +42,10 @@ const CCodeDetail = () => {
     },
   ]);
 
-  const [Ncodes, setNCodes] = useState([
-    {
-      rownum: "",
-      upper_COMMON_CODE: "",
-      common_CODE: "",
-      code_NAME: "",
-      code_DESCRIPTION: "",
-      code_REG_DATE: "",
-      code_MODIFY_DATE: "",
-    },
-  ]);
-
-  // 선택된 코드
-  const [Scodes, setSCodes] = useState([
-    {
-      common_CODE: "",
-      upper_COMMON_CODE: "",
-      code_NAME: "",
-      code_DESCRIPTION: "",
-    },
-  ]);
+  const [cmm, setCmm] = useState("");
+  const [up, setUp] = useState("");
+  const [name, setName] = useState("");
+  const [des, setDes] = useState("");
 
   // 상위 코드
   const [Ucodes, setUCodes] = useState([
@@ -156,13 +112,10 @@ const CCodeDetail = () => {
     Dcodes.length = 0;
     for (var i = 0; i < codes.length; i++) {
       if (codes[i].common_CODE === param) {
-        Scodes[0] = {
-          upper_COMMON_CODE: "없음",
-          common_CODE: codes[i].common_CODE,
-          code_NAME: codes[i].code_NAME,
-          code_DESCRIPTION: codes[i].code_DESCRIPTION,
-        };
-        console.log(Scodes);
+        setUp("");
+        setCmm(codes[i].common_CODE);
+        setName(codes[i].code_NAME);
+        setDes(codes[i].code_DESCRIPTION);
       }
       if (codes[i].upper_COMMON_CODE === param) {
         Dcodes.push({
@@ -176,7 +129,18 @@ const CCodeDetail = () => {
         });
       }
     }
-    setCodes(Dcodes);
+  };
+
+  // 공통 코드 선택
+  const ccodeClick = (param, e) => {
+    for (var i = 0; i < codes.length; i++) {
+      if (codes[i].common_CODE === param) {
+        setCmm(codes[i].common_CODE);
+        setName(codes[i].code_NAME);
+        setDes(codes[i].code_DESCRIPTION);
+        setUp(codes[i].upper_COMMON_CODE);
+      }
+    }
   };
 
   // 검색 axios
@@ -192,7 +156,50 @@ const CCodeDetail = () => {
       .then((response) => {
         setCodes(response.data);
       });
-  }, [searchKey, searchValue, codes, Dcodes]);
+  }, [searchKey, searchValue]);
+
+  const codeRemove = (e) => {
+    console.log("지우기");
+
+    setCmm("");
+    setName("");
+    setDes("");
+    setUp("");
+  };
+
+  const codeAdd = (e) => {
+    axios
+      .post(
+        "http://192.168.0.17:2000/CodeRegist.do?COMMON_CODE=" +
+          cmm +
+          "&UPPER_COMMON_CODE=" +
+          up +
+          "&CODE_NAME=" +
+          name +
+          "&CODE_DESCRIPTION=" +
+          des
+      )
+      .then((response) => {
+        console.log(response);
+      });
+  };
+
+  const onChange = (e) => {
+    console.log(e.target);
+    if (e.target.name === "common_CODE") {
+      setCmm(e.target.value);
+    }
+    if (e.target.name === "code_NAME") {
+      setName(e.target.value);
+    }
+    if (e.target.name === "code_DESCRIPTION") {
+      setDes(e.target.value);
+    }
+    if (e.target.name === "upper_COMMON_CODE") {
+      setUp(e.target.value);
+    }
+  };
+  console.log("up" + up);
 
   return (
     <div>
@@ -227,6 +234,7 @@ const CCodeDetail = () => {
                     type={"button"}
                     className="btn btn btn-outline-success"
                     style={{ float: "right" }}
+                    onClick={codeAdd}
                   >
                     추가
                   </button>
@@ -245,6 +253,7 @@ const CCodeDetail = () => {
                     type={"button"}
                     className="btn btn btn-outline-secondary"
                     style={{ float: "right" }}
+                    onClick={codeRemove}
                   >
                     지우기
                   </button>
@@ -264,73 +273,80 @@ const CCodeDetail = () => {
         </div>
 
         <div>
-          <tbody>
-            <tr>
-              <td>상위코드</td>
-              <td>
-                <select
-                  id="landLineNumF"
-                  className="form-select"
-                  style={{
-                    marginRight: "10px",
-                    float: "left",
-                    width: "100px",
-                  }}
-                >
-                  <option
-                    defaultChecked
-                    value={Scodes[0].upper_COMMON_CODE}
-                  ></option>
-                  {Ucodes.length < 1 ? (
-                    // eslint-disable-next-line jsx-a11y/heading-has-content
-                    <option>없음</option>
-                  ) : (
-                    // eslint-disable-next-line jsx-a11y/heading-has-content
-                    Ucodes.map((Ucodes, index) => (
-                      <option>{Ucodes.common_CODE}</option>
-                    ))
-                  )}
-                </select>
-              </td>
-            </tr>
-            <tr>
-              <td>공통 코드</td>
-              <td>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="common_CODE"
-                  name="common_CODE"
-                  value={Scodes[0].common_CODE}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>공통 코드명</td>
-              <td>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="code_NAME"
-                  name="code_NAME"
-                  value={Scodes[0].code_NAME}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>공통 코드 설명</td>
-              <td>
-                <textarea
-                  type="text"
-                  className="form-control"
-                  id="code_DESCRIPTION"
-                  name="code_DESCRIPTION"
-                  value={Scodes[0].code_DESCRIPTION}
-                />
-              </td>
-            </tr>
-          </tbody>
-          <div></div>
+          <table>
+            <tbody>
+              <tr>
+                <td>상위코드</td>
+                <td>
+                  <select
+                    id="landLineNumF"
+                    className="form-select"
+                    style={{
+                      marginRight: "10px",
+                      float: "left",
+                      width: "100px",
+                    }}
+                    key={up}
+                    defaultValue={up}
+                  >
+                    <option
+                      key={up}
+                      defaultValue={up}
+                      onChange={onChange}
+                    ></option>
+                    {Ucodes.length < 1 ? (
+                      // eslint-disable-next-line jsx-a11y/heading-has-content
+                      <option>없음</option>
+                    ) : (
+                      // eslint-disable-next-line jsx-a11y/heading-has-content
+                      Ucodes.map((Ucodes, index) => (
+                        <option value={Ucodes.common_CODE} onChange={onChange}>
+                          {Ucodes.common_CODE}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>공통 코드</td>
+                <td>
+                  <input
+                    className="form-control"
+                    id="common_CODE"
+                    name="common_CODE"
+                    value={cmm}
+                    onChange={onChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>공통 코드명</td>
+                <td>
+                  <input
+                    className="form-control"
+                    id="code_NAME"
+                    name="code_NAME"
+                    value={name}
+                    onChange={onChange}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>공통 코드 설명</td>
+                <td>
+                  <textarea
+                    type="text"
+                    className="form-control"
+                    id="code_DESCRIPTION"
+                    name="code_DESCRIPTION"
+                    value={des}
+                    onChange={onChange}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <div style={Head}>
@@ -406,9 +422,18 @@ const CCodeDetail = () => {
                     <td style={{ textAlign: "center" }}>
                       <input type={"checkbox"} />
                     </td>
-                    <td className="target">{dcode.common_CODE}</td>
-                    <td>{dcode.code_NAME}</td>
-                    <td>{dcode.code_DESCRIPTION}</td>
+                    <td
+                      className="target"
+                      onClick={(e) => ccodeClick(dcode.common_CODE)}
+                    >
+                      {dcode.common_CODE}
+                    </td>
+                    <td onClick={(e) => ccodeClick(dcode.common_CODE)}>
+                      {dcode.code_NAME}
+                    </td>
+                    <td onClick={(e) => ccodeClick(dcode.common_CODE)}>
+                      {dcode.code_DESCRIPTION}
+                    </td>
                   </tr>
                 ))
               )}
