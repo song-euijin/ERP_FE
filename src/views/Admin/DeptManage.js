@@ -1,9 +1,13 @@
 import React from 'react';
+import ComponentCard from '../../components/ComponentCard';
 
 const DeptManage = () => {
     return (
         <div>
-            부서관리
+            <ComponentCard title={'부서관리'}>
+                부서관리
+            </ComponentCard>
+            
         </div>
     );
 };

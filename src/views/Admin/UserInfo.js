@@ -1,8 +1,8 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import userImg from '../../assets/images/users/user2.jpg';
+
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import ComponentCard from '../../components/ComponentCard';
 
@@ -13,7 +13,7 @@ const StyledTd = styled.td`
 `;
 
 const UserInfo = (args) => {
-    
+
     //target 정보 가져오기 start
     const getParams = new URLSearchParams(window.location.search);
     let getUserId = getParams.get("userId");
@@ -21,6 +21,7 @@ const UserInfo = (args) => {
     const [user, setUser] = useState([{
         userName: '',
         userId: '',
+        userImg: '',
         userDept: '',
         userRank: '',
         userPosition: '',
@@ -31,6 +32,22 @@ const UserInfo = (args) => {
         userAddr: '',
         userAddrDetail: ''
       }]);
+
+    // 저장된 사진이 없을경우 기본사진 대체  
+    const defaultImg = 'default_profile.jpg';
+
+    const [phoneNum, setPhoneNum] = useState('');
+    const [landLineNum, setLandLineNum] = useState('')
+
+    useEffect(() => {
+        setPhoneNum(user.map((u)=>u.userPhone.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)));
+        setLandLineNum(user.map((u)=>u.userLandLineNumber.substring(0,2) === '02'
+                                    ? u.userLandLineNumber.replace(/^(\d{1,2})(\d{3,4})(\d{4})$/, `$1-$2-$3`)
+                                    : u.userLandLineNumber.replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`)));
+        console.log(phoneNum);
+        console.log(landLineNum);
+    }, [user])
+      
 
     useEffect(() => {
       console.log(getUserId);
@@ -124,13 +141,14 @@ const UserInfo = (args) => {
         .then((response) => {
             setTargetCode(response.data);
         })
-    }, []);  
+    }, [getUserId]);  
     
     const [modifyDept, setModifyDept] = useState('')
     const [modifyRank, setModifyRank] = useState('')
     const [modifyPosition, setModifyPosition] = useState('')
     const [modifyAuthority, setModifyAuthority] = useState('')
     const [modifyStatus, setModifyStatus] = useState('')
+    const [modifyImg, setModifyImg] = useState('')
 
     const modifyBtn =()=> {
         setModifyDept(targetCode.map(code=>(code.userDept)));
@@ -138,20 +156,20 @@ const UserInfo = (args) => {
         setModifyPosition(targetCode.map(code=>(code.userPosition)));
         setModifyAuthority(targetCode.map(code=>(code.userAuthority)));
         setModifyStatus(targetCode.map(code=>(code.userStatus)));
+        setModifyImg(user.map(u=>(u.userImg || defaultImg)));
         toggle();
     }
 
-
-
-
-
     const onChangeInfo =(e)=>{
-        console.log('value: ', e.target.value, 'name: ', e.target.name);
-        let name = e.target.name,
-            value = e.target.value;
+        const {name, value} = e.target;
+
         if(name === 'userDept'){
             setModifyDept(value);
-        }else if(name === 'userRank'){
+        }if(name === 'userImg'){
+            let userImgVal = e.target.files[0].name;
+            setModifyImg(userImgVal);
+        }
+        else if(name === 'userRank'){
             setModifyRank(value);
         }else if(name === 'userPosition'){
             setModifyPosition(value);
@@ -159,7 +177,6 @@ const UserInfo = (args) => {
             setModifyAuthority(value);
         }else if(name === 'userStatus'){
             setModifyStatus(value);
-            console.log(modifyStatus, 'S');
         }
     }
 
@@ -188,9 +205,15 @@ const UserInfo = (args) => {
         console.log(modifyStatus, 'S');
     }, [modifyStatus]);
 
+    useEffect(() => {
+        setModifyImg(modifyImg);
+        console.log(modifyImg, 'I');
+    }, [modifyImg]);
+
     // 사용자 수정 정보 세팅 start
     const params = new URLSearchParams();
     params.append("userId", getUserId);
+    params.append("userImg", modifyImg);
     params.append("userDept", modifyDept);
     params.append("userRank", modifyRank);
     params.append("userPosition", modifyPosition);
@@ -199,24 +222,23 @@ const UserInfo = (args) => {
     // 사용자 수정 정보 세팅 End
 
     const onClickModify =()=>{
-        console.log('부서>',modifyDept,'직급>',modifyRank,'직책>',modifyPosition,'권한>',modifyAuthority,'상태>',modifyStatus );
+        console.log('부서>',modifyDept,'직급>',modifyRank,'직책>',modifyPosition,'권한>',modifyAuthority,'상태>',modifyStatus,'사진>',modifyImg);
         axios.post("http://localhost:8080/CMN/userModify.do", params)
         .then(function() {
             alert('사용자 수정이 정상적으로 처리되었습니다!!!!!!.');
             toggle();
-            window.location.replace('/Admin/UserInfo?userId='+getUserId);
+            window.location.replace('/Admin/UserManage/UserInfo?userId='+getUserId);
           })
           .catch((error) => {
             console.log(error);
           })
     }
-    
 
 return (
         <div>
             <ComponentCard title={'사용자 정보'} >
                 <div style={{display:"block", height:"50px"}}>
-                    <Link to={'/Admin/UserList'}>
+                    <Link to={'/Admin/UserManage/UserList'}>
                         <button type="button" className="btn btn btn-secondary" id="back" style={{float:"right", marginBottom:"10px", marginLeft:"10px"}}>뒤로</button>
                     </Link>
                     <button type="button" className="btn btn btn-primary" id="modifyBtn" style={{float:"right", marginBottom:"10px"}} onClick={modifyBtn}>수정</button>
@@ -230,6 +252,15 @@ return (
                                     <tr>
                                         <td>아이디</td>
                                         <td><input type="text" className="form-control" id="userId" name="userId" style={{width:"200px", float:"left", backgroundColor: "lightgrey"}} value={info.userId} readOnly/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>프로필 사진</td>
+                                        <td colSpan={3}>
+                                            <tr>
+                                                <img alt='user1' src={require(`../../assets/images/users/${modifyImg || defaultImg}`)} style={{width:"200px"}} /> 
+                                                <input type="file" className="form-control" id="userImg" name="userImg" style={{width:"200px"}} onChange={onChangeInfo}/>
+                                            </tr>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>소속 부서</td>
@@ -295,53 +326,57 @@ return (
                         </Button>
                     </ModalFooter>
                 </Modal>
-                <img alt='user1' src={userImg} style={{width:"25%", height:"80%", marginLeft:"2%"}} />          
-                <table className="table table-bordered table-hover" style={{width:"70%", height:"80%", float:"right"}}>
+                <div style={{display: "flex", justifyContent: "center"}}>   
                     {user.map((info, index) => (
-                        <tbody key={index}>  
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>이름</StyledTd>
-                            <td style={{width:"70%"}}>{info.userName}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>아이디</StyledTd>
-                            <td style={{width:"70%"}}>{info.userId}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>부서</StyledTd>
-                            <td style={{width:"70%"}}>{info.userDept}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>직급</StyledTd>
-                            <td style={{width:"70%"}}>{info.userRank}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>직책</StyledTd>
-                            <td style={{width:"70%"}}>{info.userPosition}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>권한</StyledTd>
-                            <td style={{width:"70%"}}>{info.userAuthority}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>상태</StyledTd>
-                            <td style={{width:"70%"}}>{info.userStatus}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>연락처</StyledTd>
-                            <td style={{width:"70%"}}>{info.userPhone}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>내선번호</StyledTd>
-                            <td style={{width:"70%"}}>{info.userLandLineNumber}</td>
-                        </tr>
-                        <tr>
-                            <StyledTd style={{backgroundColor:"#2962ff"}}>주소</StyledTd>
-                            <td style={{width:"70%"}}>{info.userAddr} {info.userAddrDetail}</td>
-                        </tr>
-                    </tbody>
+                        <div style={{width: "100%", display:"flex", alignItems: "center", flexDirection: "column"}}> 
+                            <img alt='user1' src={require(`../../assets/images/users/${info.userImg || defaultImg}`)} style={{width:"300px"}} /> 
+                            <table className="table table-bordered table-hover" style={{marginTop:"50px", width: "80%"}}>
+                                <tbody key={index}>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>이름</StyledTd>
+                                        <td style={{width:"70%"}}>{info.userName}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>아이디</StyledTd>
+                                        <td style={{width:"70%"}}>{info.userId}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>부서</StyledTd>
+                                        <td style={{width:"70%"}}>{info.userDept}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>직급</StyledTd>
+                                        <td style={{width:"70%"}}>{info.userRank}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>직책</StyledTd>
+                                        <td style={{width:"70%"}}>{info.userPosition}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>권한</StyledTd>
+                                        <td style={{width:"70%"}}>{info.userAuthority}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>상태</StyledTd>
+                                        <td style={{width:"70%"}}>{info.userStatus}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>연락처</StyledTd>
+                                        <td style={{width:"70%"}}>{phoneNum}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>내선번호</StyledTd>
+                                        <td style={{width:"70%"}}>{landLineNum}</td>
+                                    </tr>
+                                    <tr>
+                                        <StyledTd style={{backgroundColor:"#2962ff"}}>주소</StyledTd>
+                                        <td style={{width:"70%"}}>{info.userAddr}, {info.userAddrDetail}</td>
+                                    </tr>
+                                </tbody>
+                            </table> 
+                        </div>     
                     ))}
-                </table>      
+                </div>
             </ComponentCard>      
         </div>
     );

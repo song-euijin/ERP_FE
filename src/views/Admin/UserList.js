@@ -130,7 +130,7 @@ const UserList = () => {
             alert('수정 대상은 한명만 선택해주세요!');
         }else{
             console.log(checkedList.values);
-            window.location.replace('/Admin/UserInfo?userId='+checkedList);
+            window.location.replace('/Admin/UserManage/UserInfo?userId='+checkedList);
         }
     }
     // 수정 버튼 클릭 이벤트 end
@@ -207,7 +207,7 @@ const UserList = () => {
                                     </td>
                                     <td>{user.userName}</td>
                                     <td className="target">
-                                        <StyledLink to={"/Admin/UserInfo?userId="+user.userId}>{user.userId}</StyledLink>
+                                        <StyledLink to={"/Admin/UserManage/UserInfo?userId="+user.userId}>{user.userId}</StyledLink>
                                     </td>
                                     <td>{user.userDept}</td>
                                     <td>{user.userRank}</td>
