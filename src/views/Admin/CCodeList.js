@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Input } from "reactstrap";
 import CCodeReg from "./CCodeReg";
+import userEvent from "@testing-library/user-event";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -20,6 +21,14 @@ const StyledLink = styled(Link)`
   &:active {
     color: blue;
   }
+`;
+
+const StyledTB = styled.table`
+  border-collapse: separate;
+  border-spacing: 27px 5px;
+  table-layout: fixed;
+  margin-right: auto;
+  text-align: right;
 `;
 
 const StyledThead = styled.thead`
@@ -47,8 +56,10 @@ const CCodeList = () => {
 const CCodeDetail = () => {
   const Head = { display: "flex" };
   const Head_BT = { width: "30%", display: "flex" }; //사용자 목록
+
   const [codes, setCodes] = useState([
     {
+      rownum: "",
       upper_COMMON_CODE: "",
       common_CODE: "",
       code_NAME: "",
@@ -58,12 +69,67 @@ const CCodeDetail = () => {
     },
   ]);
 
-  //사용자 목록 axios
-  useEffect(() => {
-    axios.get("http://192.168.0.17:5001/CMN/CodeList.do").then((response) => {
-      setCodes(response.data);
-    });
-  }, []);
+  const [Ncodes, setNCodes] = useState([
+    {
+      rownum: "",
+      upper_COMMON_CODE: "",
+      common_CODE: "",
+      code_NAME: "",
+      code_DESCRIPTION: "",
+      code_REG_DATE: "",
+      code_MODIFY_DATE: "",
+    },
+  ]);
+
+  // 선택된 코드
+  const [Scodes, setSCodes] = useState([
+    {
+      common_CODE: "",
+      upper_COMMON_CODE: "",
+      code_NAME: "",
+      code_DESCRIPTION: "",
+    },
+  ]);
+
+  // 상위 코드
+  const [Ucodes, setUCodes] = useState([
+    {
+      common_CODE: "",
+      code_NAME: "",
+      code_DESCRIPTION: "",
+    },
+  ]);
+
+  // 일반 공통 코드
+  const [Dcodes, setDCodes] = useState([
+    {
+      rownum: "",
+      upper_COMMON_CODE: "",
+      common_CODE: "",
+      code_NAME: "",
+      code_DESCRIPTION: "",
+      code_REG_DATE: "",
+      code_MODIFY_DATE: "",
+    },
+  ]);
+
+  for (var i = 0; i < codes.length; i++) {
+    if (codes[i].upper_COMMON_CODE === null) {
+      if (Ucodes[0].common_CODE.length < 2) {
+        Ucodes[0] = {
+          common_CODE: codes[i].common_CODE,
+          code_NAME: codes[i].code_NAME,
+          code_DESCRIPTION: codes[i].code_DESCRIPTION,
+        };
+      } else {
+        Ucodes[i] = {
+          common_CODE: codes[i].common_CODE,
+          code_NAME: codes[i].code_NAME,
+          code_DESCRIPTION: codes[i].code_DESCRIPTION,
+        };
+      }
+    }
+  }
 
   // searchKey, Value
   const [searchKey, setSearchKey] = useState("common_CODE");
@@ -83,6 +149,36 @@ const CCodeDetail = () => {
     setSearchValue(value);
   };
 
+  // 상위 코드 선택
+  const codeClick = (param, e) => {
+    console.log(param);
+
+    Dcodes.length = 0;
+    for (var i = 0; i < codes.length; i++) {
+      if (codes[i].common_CODE === param) {
+        Scodes[0] = {
+          upper_COMMON_CODE: "없음",
+          common_CODE: codes[i].common_CODE,
+          code_NAME: codes[i].code_NAME,
+          code_DESCRIPTION: codes[i].code_DESCRIPTION,
+        };
+        console.log(Scodes);
+      }
+      if (codes[i].upper_COMMON_CODE === param) {
+        Dcodes.push({
+          rownum: i,
+          upper_COMMON_CODE: codes[i].upper_COMMON_CODE,
+          common_CODE: codes[i].common_CODE,
+          code_NAME: codes[i].code_NAME,
+          code_DESCRIPTION: codes[i].code_DESCRIPTION,
+          code_REG_DATE: codes[i].code_REG_DATE,
+          code_MODIFY_DATE: codes[i].code_MODIFY_DATE,
+        });
+      }
+    }
+    setCodes(Dcodes);
+  };
+
   // 검색 axios
   useEffect(() => {
     axios
@@ -96,8 +192,7 @@ const CCodeDetail = () => {
       .then((response) => {
         setCodes(response.data);
       });
-    console.log(codes);
-  }, [codes, searchKey, searchValue]);
+  }, [searchKey, searchValue, codes, Dcodes]);
 
   return (
     <div>
@@ -167,55 +262,159 @@ const CCodeDetail = () => {
             </table>
           </div>
         </div>
-        <br />
-        <br />
 
-        <CCodeReg></CCodeReg>
-
-        <table className="table table-bordered table-hover">
-          <StyledThead>
-            <tr>
-              <th style={{ width: "2%", textAlign: "center" }}>
-                <input type={"checkbox"} />
-              </th>
-              <th style={{ width: "14%" }}>상위 공통 코드</th>
-              <th style={{ width: "14%" }}>공통 코드</th>
-              <th style={{ width: "14%" }}>공통 코드명</th>
-              <th style={{ width: "14%" }}>코드 설명</th>
-              <th style={{ width: "14%" }}>등록 일자</th>
-              <th style={{ width: "14%" }}>수정 일자</th>
-            </tr>
-          </StyledThead>
+        <div>
           <tbody>
-            {codes.length < 1 ? (
-              <tr>
-                <td colSpan={9} style={{ textAlign: "center" }}>
-                  검색 결과가 없습니다.
-                </td>
-              </tr>
-            ) : (
-              codes.map((code, index) => (
-                <tr key={index}>
-                  <td style={{ textAlign: "center" }}>
-                    <input type={"checkbox"} />
-                  </td>
-                  <td>{code.upper_COMMON_CODE}</td>
-                  <td className="target">
-                    <StyledLink
-                      to={"/Admin/UserInfo?userId=" + code.common_CODE}
-                    >
-                      {code.common_CODE}
-                    </StyledLink>
-                  </td>
-                  <td>{code.code_NAME}</td>
-                  <td>{code.code_DESCRIPTION}</td>
-                  <td>{code.code_REG_DATE}</td>
-                  <td>{code.code_MODIFY_DATE}</td>
-                </tr>
-              ))
-            )}
+            <tr>
+              <td>상위코드</td>
+              <td>
+                <select
+                  id="landLineNumF"
+                  className="form-select"
+                  style={{
+                    marginRight: "10px",
+                    float: "left",
+                    width: "100px",
+                  }}
+                >
+                  <option
+                    defaultChecked
+                    value={Scodes[0].upper_COMMON_CODE}
+                  ></option>
+                  {Ucodes.length < 1 ? (
+                    // eslint-disable-next-line jsx-a11y/heading-has-content
+                    <option>없음</option>
+                  ) : (
+                    // eslint-disable-next-line jsx-a11y/heading-has-content
+                    Ucodes.map((Ucodes, index) => (
+                      <option>{Ucodes.common_CODE}</option>
+                    ))
+                  )}
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td>공통 코드</td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="common_CODE"
+                  name="common_CODE"
+                  value={Scodes[0].common_CODE}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>공통 코드명</td>
+              <td>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="code_NAME"
+                  name="code_NAME"
+                  value={Scodes[0].code_NAME}
+                />
+              </td>
+            </tr>
+            <tr>
+              <td>공통 코드 설명</td>
+              <td>
+                <textarea
+                  type="text"
+                  className="form-control"
+                  id="code_DESCRIPTION"
+                  name="code_DESCRIPTION"
+                  value={Scodes[0].code_DESCRIPTION}
+                />
+              </td>
+            </tr>
           </tbody>
-        </table>
+          <div></div>
+        </div>
+
+        <div style={Head}>
+          <table
+            className="table table-bordered table-hover"
+            style={{ width: "30%" }}
+          >
+            <StyledThead>
+              <tr>
+                <th style={{ width: "2%", textAlign: "center" }}>
+                  <input type={"checkbox"} />
+                </th>
+                <th style={{ width: "14%" }}>공통 코드</th>
+                <th style={{ width: "14%" }}>코드명</th>
+              </tr>
+            </StyledThead>
+            <tbody>
+              {Ucodes.length < 1 ? (
+                <tr>
+                  <td colSpan={9} style={{ textAlign: "center" }}>
+                    검색 결과가 없습니다.
+                  </td>
+                </tr>
+              ) : (
+                Ucodes.map((ucode, index) => (
+                  <tr key={index}>
+                    <td style={{ textAlign: "center" }}>
+                      <input type={"checkbox"} />
+                    </td>
+                    <td
+                      className="target"
+                      onClick={(e) => {
+                        codeClick(ucode.common_CODE, e);
+                      }}
+                    >
+                      {ucode.common_CODE}
+                    </td>
+                    <td
+                      className="target"
+                      onClick={(e) => {
+                        codeClick(ucode.common_CODE, e);
+                      }}
+                    >
+                      {ucode.code_NAME}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+
+          <table className="table table-bordered table-hover">
+            <StyledThead>
+              <tr>
+                <th style={{ width: "2%", textAlign: "center" }}>
+                  <input type={"checkbox"} />
+                </th>
+                <th style={{ width: "14%" }}>공통 코드</th>
+                <th style={{ width: "14%" }}>공통 코드명</th>
+                <th style={{ width: "14%" }}>코드 설명</th>
+              </tr>
+            </StyledThead>
+            <tbody>
+              {Dcodes.length < 1 ? (
+                <tr>
+                  <td colSpan={9} style={{ textAlign: "center" }}>
+                    검색 결과가 없습니다.
+                  </td>
+                </tr>
+              ) : (
+                Dcodes.map((dcode, index) => (
+                  <tr key={index}>
+                    <td style={{ textAlign: "center" }}>
+                      <input type={"checkbox"} />
+                    </td>
+                    <td className="target">{dcode.common_CODE}</td>
+                    <td>{dcode.code_NAME}</td>
+                    <td>{dcode.code_DESCRIPTION}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
