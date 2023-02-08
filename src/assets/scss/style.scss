@@ -4,3 +4,80 @@
 @import "~bootstrap-icons/font/bootstrap-icons.scss";
 @import "./layout/sidebar";
 @import "./layout/container";
+
+.accordion-button {
+    background-color: #ffffff !important;
+    border-bottom: solid 1.5px #bbd4e2!important;
+    border-radius: 0%!important;
+    &:not(.collapsed) {
+    background-color: #eef5f9 !important;
+      }
+
+      &:hover {
+        background-color: #e0ebf1 !important;
+      }
+}
+
+.accordion-body{
+    padding: 0rem !important;
+    display: flex;
+    align-items: center;
+
+    background-color: #ffffff !important;
+    &:hover {
+        background-color: #e0ebf1 !important;
+      }
+}
+
+.accordion-box{
+    width: 100%;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border: none;
+    background-color: #ffffff ;
+    &:hover {
+        background-color: #e0ebf1 ;
+      }
+}
+
+.accordion-button:focus {
+box-shadow: none;
+}
+
+.accordion-button:not(.collapsed) {
+color: #212529;
+}
+
+.nonClick{
+    background-color: #ffffff ;
+
+}
+
+.active{
+    background-color:#e0ebf1 ;
+
+}
+
+.card-cus{
+    display: flex;
+    justify-content: space-between;
+}
+
+.icon-add{
+    font-size: 19px;
+    color: #4393c1;
+
+    &:hover{
+        color: #5cc143;
+    }
+}
+
+.scroll{
+    max-height: 72vh;
+    overflow: scroll;
+}
+
+.card{
+    margin-bottom: 0px !important;
+
+}
