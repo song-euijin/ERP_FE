@@ -23,6 +23,7 @@ const ProjectDashboard = () => {
   const index = location.state.projectIndex;
 
   const [project, setProject] = useState({
+    projectIndex:index,
     projectName: "",
     ProjectDscription: "",
     projectStartDate: "",
@@ -73,7 +74,7 @@ const ProjectDashboard = () => {
             <PmsChart project={project} setProject={setProject} />
           </Col>
           <Col sm="6" lg="6" xl="6" xxl="4">
-          <ProjectUserList></ProjectUserList>
+          <ProjectUserList project={project} ></ProjectUserList>
           </Col>
         </Row>
         <Row>
