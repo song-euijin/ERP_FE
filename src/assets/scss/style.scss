@@ -81,3 +81,20 @@ color: #212529;
     margin-bottom: 0px !important;
 
 }
+
+.ccode_table{
+    border-spacing: 10px;
+    border-collapse: unset !important;
+}
+
+.ccode_card_body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input_warning{
+    font-size: 10px;
+    position: absolute;
+    color: red;
+}

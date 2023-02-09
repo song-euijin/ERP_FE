@@ -52,6 +52,7 @@ const CCodeList = () => {
       });
   }, [state]);
 
+  // 목록 데이터
   useEffect(() => {
     var x = 0;
     for (var i = 0; i < codes.length; i++) {
@@ -70,6 +71,37 @@ const CCodeList = () => {
     }
     setState("upper");
   }, [codes]);
+
+  // 목록 데이터 불러오기
+  const listUp = () => {
+    setUpper([
+      {
+        upper_COMMON_CODE: "",
+        common_CODE: "",
+        code_NAME: "",
+        code_DESCRIPTION: "",
+        code_REG_DATE: "",
+        code_MODIFY_DATE: "",
+        isused: "",
+      },
+    ]);
+    var x = 0;
+    for (var i = 0; i < codes.length; i++) {
+      if (codes[i].upper_COMMON_CODE === null) {
+        upper[x] = {
+          upper_COMMON_CODE: codes[i].upper_COMMON_CODE,
+          common_CODE: codes[i].common_CODE,
+          code_NAME: codes[i].code_NAME,
+          code_DESCRIPTION: codes[i].code_DESCRIPTION,
+          code_REG_DATE: codes[i].code_REG_DATE,
+          code_MODIFY_DATE: codes[i].code_MODIFY_DATE,
+          isused: codes[i].isused,
+        };
+        x++;
+      }
+    }
+    setState("upper");
+  };
 
   // 검색
   useEffect(() => {}, []);
@@ -102,6 +134,10 @@ const CCodeList = () => {
 
   init();
 
+  const [iscommoValid, setIscommoValid] = useState(false);
+  const [isnameValid, setIsnameValid] = useState(false);
+  const [isuseValid, setIsuseValid] = useState(false);
+
   // 선택될 코드 변경 정보 추적
   const onChange = (e) => {
     if (e.target.name === "common_CODE") {
@@ -121,7 +157,7 @@ const CCodeList = () => {
       setSelect({
         rownum: select.rownum,
         upper_COMMON_CODE: e.target.value,
-        common_CODE: select.common_CODE,
+        common_CODE: e.target.value,
         code_NAME: select.code_NAME,
         code_DESCRIPTION: select.code_DESCRIPTION,
         code_REG_DATE: select.code_REG_DATE,
@@ -131,6 +167,11 @@ const CCodeList = () => {
     }
 
     if (e.target.name === "code_NAME") {
+      if (e.target.value.length < 1) {
+        setIscommoValid(true);
+      } else {
+        setIscommoValid(false);
+      }
       setSelect({
         rownum: select.rownum,
         upper_COMMON_CODE: select.upper_COMMON_CODE,
@@ -210,6 +251,8 @@ const CCodeList = () => {
 
   // 코드 수정 axios
   const codeUpdate = () => {
+    if (select.code_NAME.length < 1) {
+    }
     axios({
       method: "post",
       url: "http://192.168.0.37:2000/CodeUpdate.do",
@@ -226,17 +269,42 @@ const CCodeList = () => {
           setCodes(Response.data);
         });
       setState("update");
+      listUp();
     });
   };
 
+  // 코드 삭제 axios
+  const CodeDelete = () => {
+    for (var i = 0; i < click.length; i++) {
+      click[i].classList.remove("active");
+    }
+
+    axios({
+      method: "post",
+      url: "http://192.168.0.37:2000/CodeDelete.do",
+      data: {
+        common_CODE: select.common_CODE,
+      },
+    }).then(function (response) {
+      axios
+        .get("http://192.168.0.37:2000/CodeList.do?searchKey=' '&searchValue= ")
+        .then((Response) => {
+          setCodes(Response.data);
+        });
+      setState("delete");
+      listUp();
+    });
+  };
+
+  // 코드 생성 페이지 이동
   const pageMove = () => {
     setSidePage("create");
-    console.log(sidePage);
+    codeRemove();
   };
 
   return (
     <div>
-      <div className="card-body">
+      <div className="card-body ">
         <div className="row">
           <div className="col-sm-3 col-lg-3">
             <div className="card">
@@ -308,9 +376,9 @@ const CCodeList = () => {
                   <h6 className="border-bottom p-3 mb-0 card-title">
                     <i className="bi bi-card-text me-2"> </i>공통 코드 상세
                   </h6>
-                  <div className="card-body">
+                  <div className="card-body ccode_card_body">
                     <div>
-                      <table>
+                      <table className="ccode_table">
                         <tbody>
                           <tr>
                             <td>상위코드</td>
@@ -362,8 +430,15 @@ const CCodeList = () => {
                               />
                             </td>
                           </tr>
+                          {iscommoValid && (
+                            <tr>
+                              <div className="input_warning">
+                                필수 입력 사항입니다.
+                              </div>
+                            </tr>
+                          )}
                           <tr>
-                            <td>공통 코드명</td>
+                            <td>* 공통 코드명</td>
                             <td>
                               <input
                                 className="form-control"
@@ -388,7 +463,7 @@ const CCodeList = () => {
                             </td>
                           </tr>
                           <tr>
-                            <td>사용 여부</td>
+                            <td>* 사용 여부</td>
                             <td>
                               <select
                                 name="isused"
@@ -418,7 +493,7 @@ const CCodeList = () => {
                       </table>
                     </div>
                     <div>
-                      <table>
+                      <table className="ccode_table">
                         <tr>
                           <td>
                             <button
@@ -435,6 +510,7 @@ const CCodeList = () => {
                               type={"button"}
                               className="btn btn btn-outline-danger"
                               style={{ float: "right" }}
+                              onClick={CodeDelete}
                             >
                               삭제
                             </button>
@@ -449,9 +525,9 @@ const CCodeList = () => {
                   <h6 className="border-bottom p-3 mb-0 card-title">
                     <i className="bi bi-card-text me-2"> </i>공통 코드 등록
                   </h6>
-                  <div className="card-body">
+                  <div className="card-body ccode_card_body">
                     <div>
-                      <table>
+                      <table className="ccode_table">
                         <tbody>
                           <tr>
                             <td>상위코드</td>
@@ -473,7 +549,7 @@ const CCodeList = () => {
                                   defaultValue={select.upper_COMMON_CODE}
                                   value=""
                                 >
-                                  ====
+                                  상위코드 생성
                                 </option>
                                 {upper.length < 1 ? (
                                   // eslint-disable-next-line jsx-a11y/heading-has-content
@@ -557,7 +633,7 @@ const CCodeList = () => {
                       </table>
                     </div>
                     <div>
-                      <table>
+                      <table className="ccode_table">
                         <tr>
                           <td>
                             <button
