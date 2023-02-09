@@ -18,10 +18,9 @@ import ProjectUserList from "./ProjectUserList";
 
 const ProjectDashboard = () => {
 
-
   const location = useLocation();
   const index = location.state.projectIndex;
-
+  
   const [project, setProject] = useState({
     projectIndex:index,
     projectName: "",
@@ -29,6 +28,7 @@ const ProjectDashboard = () => {
     projectStartDate: "",
     projectEndDate: "",
   });
+
   const [cSelected, setCSelected] = useState([]);
   const [rSelected, setRSelected] = useState(1);
 

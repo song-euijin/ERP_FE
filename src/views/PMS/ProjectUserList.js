@@ -25,6 +25,7 @@ import React, { useState, useEffect } from "react";
 import customAxios from "../../components/axios/axios";
 import ComponentCard from "../../components/ComponentCard";
 import styled from "styled-components";
+import qs from "qs";
 
 const Li = styled.li`
   list-style-type: "┕  ";
@@ -44,6 +45,9 @@ const ProjectUserList = (props) => {
     },
   ]);
 
+
+
+
   const [projectIndex, setProjectIndex] = useState(props.project.porjectIndex);
   const [checkedList, setCheckedList] = useState([]);
   const [userList, setUserList] = useState([]);
@@ -58,22 +62,7 @@ const ProjectUserList = (props) => {
 
   const [open, setOpen] = useState(true);
 
-  const [userInfo, setUserInfo] = useState([
-    {
-      userName: "",
-      userId: "",
-      userImg: "",
-      userDept: "",
-      userRank: "",
-      userPosition: "",
-      userAuthority: "",
-      userStatus: "",
-      userPhone: "",
-      userLandLineNumber: "",
-      userAddr: "",
-      userAddrDetail: "",
-    },
-  ]);
+
 
   const onClickFolder = () => {
     open === true ? setOpen(false) : setOpen(true);
@@ -188,6 +177,8 @@ const ProjectUserList = (props) => {
   };
 
   const managerDelete = () => {
+    console.log(checkTempMangerList)
+    console.log(userList)
     setUserList([...userList, ...checkTempMangerList]);
 
     setTempManagerList(
@@ -240,11 +231,34 @@ const ProjectUserList = (props) => {
   };
 
   const batchSave = () => {
+
+    const qs = require('qs');
+
+    customAxios({
+      url: "/insertProjectMangerUser.do",
+      method: "POST",
+      params:{
+        projectIndex : props.project.projectIndex,
+        uservo : tempMangerList
+      },
+      paramSerializer: params => {
+        return qs.stringify(params, { arrayFormat: 'repeat'})
+      }
+    }).then((response) => {
+
+
+    });
+
+
     console.log("batchSave");
     console.log("tempMangerList", tempMangerList);
     console.log("tempParticipantList", tempParticipantList);
   };
   const isActTaps = () => {};
+
+  const onEnter =( ) =>{
+    console.log('onEnter');
+  }
 
   return (
     <Card>
@@ -264,6 +278,7 @@ const ProjectUserList = (props) => {
         </CardTitle>
         <CardSubtitle className="text-muted" tag="h6"></CardSubtitle>
         <Modal
+        onEnter={onEnter}
           isOpen={modal}
           toggle={toggle}
           // size="lg"
@@ -428,8 +443,9 @@ const ProjectUserList = (props) => {
                                 }
                               />
                               <Label check>
-                                {user.userFirstName}
-                                {user.userName}
+                                {user.userFirstName? user.userFirstName: user.userName}
+                                {/* {user.userFirstName}
+                                {user.userName} */}
                               </Label>
                             </FormGroup>
                           </div>
@@ -551,8 +567,7 @@ const ProjectUserList = (props) => {
                                   }
                                 />
                                 <Label check>
-                                  {user.userFirstName}
-                                  {user.userName}
+                                  {user.userFirstName?user.userFirstName:user.userName}
                                 </Label>
                               </FormGroup>
                             </div>
@@ -609,7 +624,6 @@ const ProjectUserList = (props) => {
                                   }
                                 />
                                 <Label check>
-                                  {user.userFirstName}
                                   {user.userName}
                                 </Label>
                               </FormGroup>
@@ -654,6 +668,7 @@ const ProjectUserList = (props) => {
                   <Row xs="2" style={{ color: "grey", fontWeight: "bold" }}>
                     {/*관리자 명단 map*/}
                     {tempMangerList.map((data, idx) => {
+                      console.log(data)
                       return (
                         <Col style={{ color: "black" }} key={idx}>
                           {data.userFirstName}
